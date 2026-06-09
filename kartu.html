@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cetak Kartu Ujian CBT SMANJO</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #F1F5F9;
+    }
+    
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg-color);
+      margin: 0;
+      padding: 20px;
+      color: #000;
+    }
+
+    /* Tampilan Kontrol (Tidak ikut ter-print) */
+    .control-panel {
+      max-width: 800px;
+      margin: 0 auto 30px auto;
+      background: #FFF;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+    .control-panel h2 { margin-top: 0; color: #1E293B; }
+    .btn-print {
+      background: #1DB954; color: #FFF; border: none; padding: 12px 24px;
+      border-radius: 8px; font-weight: bold; font-size: 16px; cursor: pointer;
+      transition: 0.2s; text-transform: uppercase; letter-spacing: 1px;
+    }
+    .btn-print:hover { background: #179443; transform: translateY(-2px); }
+    .btn-print:disabled { background: #CBD5E1; cursor: not-allowed; transform: none; }
+    
+    #loading-text { color: #8B5CF6; font-weight: bold; margin-top: 10px; }
+
+    /* =======================================================
+       PENGATURAN KERTAS A4 & KARTU (TAMPILAN PRINT)
+       ======================================================= */
+    @page {
+      size: A4 portrait;
+      margin: 10mm; /* Margin kertas printer */
+    }
+
+    .a4-page {
+      width: 190mm; /* Lebar A4 (210mm) - margin (20mm) */
+      height: 277mm; /* Tinggi A4 (297mm) - margin (20mm) */
+      margin: 0 auto 20mm auto;
+      background: #FFF;
+      display: grid;
+      grid-template-columns: 1fr 1fr; /* 2 Kolom */
+      grid-template-rows: repeat(5, 1fr); /* 5 Baris */
+      gap: 5mm; /* Jarak antar kartu */
+      box-sizing: border-box;
+      page-break-after: always; /* Memastikan page break untuk tiap 10 kartu */
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .kartu {
+      border: 1px dashed #000;
+      box-sizing: border-box;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      background: #FFF;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kartu-header {
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid #000;
+      padding-bottom: 6px;
+      margin-bottom: 8px;
+    }
+
+    .kartu-logo { width: 45px; height: auto; margin-right: 10px; }
+    
+    .kop-sekolah { flex: 1; text-align: center; line-height: 1.2; }
+    .kop-1 { font-size: 8px; font-weight: 600; text-transform: uppercase; }
+    .kop-2 { font-size: 11px; font-weight: 800; letter-spacing: 0.5px; margin: 2px 0; }
+    .kop-3 { font-size: 9px; font-weight: 700; background: #000; color: #FFF; display: inline-block; padding: 2px 8px; border-radius: 10px; }
+
+    .kartu-body table { width: 100%; font-size: 10px; border-collapse: collapse; }
+    .kartu-body td { padding: 4px 0; vertical-align: top; }
+    .kartu-body td:nth-child(1) { width: 35%; font-weight: 600; }
+    .kartu-body td:nth-child(2) { width: 5%; text-align: center; }
+    .kartu-body td:nth-child(3) { width: 60%; font-weight: 700; font-size: 11px; }
+
+    .box-password {
+      background: #F8FAFC;
+      border: 1px solid #000;
+      padding: 2px 5px;
+      font-family: monospace;
+      font-size: 12px !important;
+      display: inline-block;
+      letter-spacing: 1px;
+    }
+
+    .catatan {
+      margin-top: auto;
+      font-size: 7px;
+      text-align: center;
+      font-style: italic;
+      border-top: 1px dotted #000;
+      padding-top: 4px;
+    }
+
+    /* Saat proses pencetakan (Ctrl+P) berlangsung */
+    @media print {
+      body { background: #FFF; padding: 0; }
+      .control-panel { display: none; } /* Sembunyikan tombol cetak */
+      .a4-page { box-shadow: none; margin: 0; border: none; }
+      .kartu { border: 1px solid #000; } /* Ganti dashed jadi solid agar lebih rapi saat diprint */
+    }
+  </style>
+</head>
+<body>
+
+  <div class="control-panel no-print">
+    <h2>🖨️ Cetak Kartu Peserta Ujian</h2>
+    <p style="color: #64748B; font-size: 14px; margin-bottom: 20px;">Data diambil langsung dari Spreadsheet (Tab: Data_Siswa).</p>
+    <button id="btnCetak" class="btn-print" onclick="window.print()" disabled>Sedang Memuat Data...</button>
+    <div id="loading-text">Menghubungkan ke Database SMANJO...</div>
+  </div>
+
+  <div id="print-area"></div>
+
+  <script>
+    // ==========================================
+    // MASUKKAN URL WEB APP GAS ANDA DI SINI
+    // ==========================================
+    const URL_API_GAS = "https://script.google.com/macros/s/AKfycbyGi8A3MIDN-aOLnPfBbupq-Xv74shn4W5_i5NnWPlr6ww5rJbUFefngSuXe7tHxROy/exec";
+    
+    // Logo Sekolah
+    const LOGO_URL = "https://i.ibb.co.com/zTHpGJ3W/20260513-105333-0000.png";
+
+    document.addEventListener("DOMContentLoaded", function() {
+      // 1. Ambil Data Siswa dari Backend
+      fetch(URL_API_GAS, {
+        method: "POST",
+        headers: { "Content-Type": "text/plain;charset=utf-8" },
+        body: JSON.stringify({ action: "getDaftarSiswa" })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if(data.error) {
+           document.getElementById('loading-text').innerText = "Gagal: " + data.error;
+           document.getElementById('loading-text').style.color = "red";
+           return;
+        }
+        
+        renderKartu(data);
+        
+        // Aktifkan tombol cetak
+        document.getElementById('loading-text').style.display = 'none';
+        const btnCetak = document.getElementById('btnCetak');
+        btnCetak.disabled = false;
+        btnCetak.innerText = "Cetak Kartu Sekarang 🖨️";
+      })
+      .catch(err => {
+        document.getElementById('loading-text').innerText = "Terjadi Kesalahan Koneksi. Cek Internet atau URL API.";
+        document.getElementById('loading-text').style.color = "red";
+        console.error(err);
+      });
+    });
+
+    // 2. Fungsi memotong array siswa menjadi per 10 orang (1 halaman A4)
+    function chunkArray(arr, size) {
+      const result = [];
+      for (let i = 0; i < arr.length; i += size) {
+        result.push(arr.slice(i, i + size));
+      }
+      return result;
+    }
+
+    // 3. Fungsi Render HTML Kartu
+    function renderKartu(daftarSiswa) {
+      const printArea = document.getElementById('print-area');
+      printArea.innerHTML = ''; // Bersihkan area
+      
+      // Bagi data per 10 siswa
+      const halamanData = chunkArray(daftarSiswa, 10);
+
+      halamanData.forEach((siswaPerHalaman) => {
+        // Buat container halaman A4
+        const pageDiv = document.createElement('div');
+        pageDiv.className = 'a4-page';
+        
+        // Loop pembuatan kartu di dalam halaman tersebut
+        siswaPerHalaman.forEach(siswa => {
+          // Nama terlalu panjang bisa merusak layout, kita potong jika lebih dari 25 karakter
+          let namaTampil = siswa.nama;
+          if(namaTampil.length > 25) { namaTampil = namaTampil.substring(0, 25) + "..."; }
+
+          const kartuHTML = `
+            <div class="kartu">
+              <div class="kartu-header">
+                <img src="${LOGO_URL}" alt="Logo" class="kartu-logo">
+                <div class="kop-sekolah">
+                  <div class="kop-1">Pemerintah Provinsi Jawa Timur</div>
+                  <div class="kop-2">SMAN 1 WONGSOREJO</div>
+                  <div class="kop-3">KARTU PESERTA CBT</div>
+                </div>
+              </div>
+              
+              <div class="kartu-body">
+                <table>
+                  <tr><td>Nama Siswa</td><td>:</td><td>${namaTampil}</td></tr>
+                  <tr><td>Kelas / Jurusan</td><td>:</td><td>${siswa.kelas}</td></tr>
+                  <tr><td>USER (NISN)</td><td>:</td><td>${siswa.nisn}</td></tr>
+                  <tr><td>PASSWORD</td><td>:</td><td><span class="box-password">${siswa.password}</span></td></tr>
+                </table>
+              </div>
+
+              <div class="catatan">
+                *Bawa kartu ini selama ujian berlangsung. Jangan sampai hilang.
+              </div>
+            </div>
+          `;
+          pageDiv.innerHTML += kartuHTML;
+        });
+
+        // Masukkan halaman A4 ke dalam print area
+        printArea.appendChild(pageDiv);
+      });
+    }
+  </script>
+</body>
+</html>
