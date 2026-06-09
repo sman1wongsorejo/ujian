@@ -18,7 +18,6 @@
       color: #000;
     }
 
-    /* Tampilan Kontrol (Tidak ikut ter-print) */
     .control-panel {
       max-width: 800px;
       margin: 0 auto 30px auto;
@@ -39,25 +38,22 @@
     
     #loading-text { color: #8B5CF6; font-weight: bold; margin-top: 10px; }
 
-    /* =======================================================
-       PENGATURAN KERTAS A4 & KARTU (TAMPILAN PRINT)
-       ======================================================= */
     @page {
       size: A4 portrait;
-      margin: 10mm; /* Margin kertas printer */
+      margin: 10mm; 
     }
 
     .a4-page {
-      width: 190mm; /* Lebar A4 (210mm) - margin (20mm) */
-      height: 277mm; /* Tinggi A4 (297mm) - margin (20mm) */
+      width: 190mm; 
+      height: 277mm; 
       margin: 0 auto 20mm auto;
       background: #FFF;
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 2 Kolom */
-      grid-template-rows: repeat(5, 1fr); /* 5 Baris */
-      gap: 5mm; /* Jarak antar kartu */
+      grid-template-columns: 1fr 1fr; 
+      grid-template-rows: repeat(5, 1fr); 
+      gap: 5mm; 
       box-sizing: border-box;
-      page-break-after: always; /* Memastikan page break untuk tiap 10 kartu */
+      page-break-after: always; 
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
@@ -113,12 +109,11 @@
       padding-top: 4px;
     }
 
-    /* Saat proses pencetakan (Ctrl+P) berlangsung */
     @media print {
       body { background: #FFF; padding: 0; }
-      .control-panel { display: none; } /* Sembunyikan tombol cetak */
+      .control-panel { display: none; } 
       .a4-page { box-shadow: none; margin: 0; border: none; }
-      .kartu { border: 1px solid #000; } /* Ganti dashed jadi solid agar lebih rapi saat diprint */
+      .kartu { border: 1px solid #000; } 
     }
   </style>
 </head>
@@ -139,11 +134,9 @@
     // ==========================================
     const URL_API_GAS = "https://script.google.com/macros/s/AKfycbyGi8A3MIDN-aOLnPfBbupq-Xv74shn4W5_i5NnWPlr6ww5rJbUFefngSuXe7tHxROy/exec";
     
-    // Logo Sekolah
     const LOGO_URL = "https://i.ibb.co.com/zTHpGJ3W/20260513-105333-0000.png";
 
     document.addEventListener("DOMContentLoaded", function() {
-      // 1. Ambil Data Siswa dari Backend
       fetch(URL_API_GAS, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -159,7 +152,6 @@
         
         renderKartu(data);
         
-        // Aktifkan tombol cetak
         document.getElementById('loading-text').style.display = 'none';
         const btnCetak = document.getElementById('btnCetak');
         btnCetak.disabled = false;
@@ -172,7 +164,6 @@
       });
     });
 
-    // 2. Fungsi memotong array siswa menjadi per 10 orang (1 halaman A4)
     function chunkArray(arr, size) {
       const result = [];
       for (let i = 0; i < arr.length; i += size) {
@@ -181,22 +172,17 @@
       return result;
     }
 
-    // 3. Fungsi Render HTML Kartu
     function renderKartu(daftarSiswa) {
       const printArea = document.getElementById('print-area');
-      printArea.innerHTML = ''; // Bersihkan area
+      printArea.innerHTML = ''; 
       
-      // Bagi data per 10 siswa
       const halamanData = chunkArray(daftarSiswa, 10);
 
       halamanData.forEach((siswaPerHalaman) => {
-        // Buat container halaman A4
         const pageDiv = document.createElement('div');
         pageDiv.className = 'a4-page';
         
-        // Loop pembuatan kartu di dalam halaman tersebut
         siswaPerHalaman.forEach(siswa => {
-          // Nama terlalu panjang bisa merusak layout, kita potong jika lebih dari 25 karakter
           let namaTampil = siswa.nama;
           if(namaTampil.length > 25) { namaTampil = namaTampil.substring(0, 25) + "..."; }
 
@@ -228,7 +214,6 @@
           pageDiv.innerHTML += kartuHTML;
         });
 
-        // Masukkan halaman A4 ke dalam print area
         printArea.appendChild(pageDiv);
       });
     }

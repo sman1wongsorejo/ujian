@@ -8,24 +8,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { 
-      /* Gen Z Modern Light Theme Palette */
-      --primary: #8B5CF6; /* Vibrant Violet */
+      var(--primary): #8B5CF6;
       --primary-hover: #7C3AED; 
-      --bg-base: #F8FAFC; /* Slate 50 - Very light gray/blue */
+      --bg-base: #F8FAFC;
       --card-bg: rgba(255, 255, 255, 0.85); 
       --card-border: rgba(255, 255, 255, 1);
-      --text-main: #1E293B; /* Slate 800 - High contrast text */
-      --text-muted: #64748B; /* Slate 500 */
-      --accent: #3B82F6; /* Bright Blue */
+      --text-main: #1E293B;
+      --text-muted: #64748B;
+      --accent: #3B82F6;
       --danger: #EF4444; 
       --warning: #F59E0B; 
-      --gradient-btn: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%); /* Violet to Pink Gradient */
+      --gradient-btn: linear-gradient(135deg, #8B5CF6 0%, #EC4899 100%);
     }
     
     body, html { 
       font-family: 'Plus Jakarta Sans', 'Poppins', sans-serif; 
       background-color: var(--bg-base);
-      /* Light Aurora Ambient Background */
       background-image: 
         radial-gradient(circle at 10% 10%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
         radial-gradient(circle at 90% 20%, rgba(236, 72, 153, 0.15) 0%, transparent 40%),
@@ -48,7 +46,6 @@
     .iframe-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; position: relative; z-index: 1;}
     .container { width: 100%; max-width: 800px; }
     
-    /* Frosted Glassmorphism Card for Light Mode */
     .card { 
       background: var(--card-bg); 
       backdrop-filter: blur(24px);
@@ -62,7 +59,6 @@
     
     .header-title { text-align: center; margin-bottom: 35px; }
     
-    /* UKURAN LOGO DIUBAH MENJADI 270px */
     .header-logo { width: 270px; height: auto; margin-bottom: 20px; filter: drop-shadow(0px 10px 20px rgba(139, 92, 246, 0.2)); transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .header-logo:hover { transform: scale(1.03) rotate(-1deg); }
     
@@ -89,7 +85,7 @@
     select option { background: #FFFFFF; color: var(--text-main); }
 
     input[type="text"]:focus, input[type="password"]:focus, select:focus { 
-      border-color: var(--primary); outline: none; 
+      border-color: #8B5CF6; outline: none; 
       background: #FFFFFF; 
       box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.15);
       transform: translateY(-2px);
@@ -103,7 +99,7 @@
       transition: all 0.2s ease !important;
       width: auto !important; margin: 0 !important; box-shadow: none !important; height: auto !important;
     }
-    .toggle-pw-btn:hover { color: var(--primary) !important; background: rgba(139, 92, 246, 0.1) !important; transform: translateY(-50%) scale(1.05) !important; }
+    .toggle-pw-btn:hover { color: #8B5CF6 !important; background: rgba(139, 92, 246, 0.1) !important; transform: translateY(-50%) scale(1.05) !important; }
     .toggle-pw-btn svg { width: 20px; height: 20px; }
     
     button { 
@@ -119,8 +115,8 @@
     
     button.btn-success { background: linear-gradient(135deg, #10B981 0%, #059669 100%); color: #FFF; box-shadow: 0 10px 20px -10px rgba(16, 185, 129, 0.5); }
     button.btn-success:hover:not(:disabled) { box-shadow: 0 15px 25px -10px rgba(16, 185, 129, 0.6); }
-    button.btn-outline { background: transparent; color: var(--primary); border: 2px solid var(--primary); box-shadow: none; }
-    button.btn-outline:hover:not(:disabled) { background: rgba(139, 92, 246, 0.05); border-color: var(--primary-hover); color: var(--primary-hover); }
+    button.btn-outline { background: transparent; color: #8B5CF6; border: 2px solid #8B5CF6; box-shadow: none; }
+    button.btn-outline:hover:not(:disabled) { background: rgba(139, 92, 246, 0.05); border-color: #7C3AED; color: #7C3AED; }
 
     #dashboard-section, #exam-section, #result-section { display: none; }
     
@@ -145,7 +141,7 @@
       border: 1px solid #F1F5F9; box-shadow: 0 4px 15px rgba(0,0,0,0.03);
     }
     .badge-qno { background: var(--gradient-btn); color: #FFF; padding: 8px 18px; border-radius: 24px; font-weight: 700; font-size: 14px; box-shadow: 0 4px 10px rgba(236, 72, 153, 0.2); }
-    .badge-jenis { background: rgba(139, 92, 246, 0.1); color: var(--primary); padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-bottom: 20px; display: inline-block; }
+    .badge-jenis { background: rgba(139, 92, 246, 0.1); color: #8B5CF6; padding: 6px 14px; border-radius: 12px; font-size: 12px; font-weight: 700; margin-bottom: 20px; display: inline-block; }
     .badge-timer { background: #FFF1F2; color: #E11D48; font-weight: 800; font-size: 15px; padding: 8px 18px; border-radius: 24px; display: flex; align-items: center; gap: 8px; border: 1px solid #FECDD3; }
     .student-info { width: 100%; text-align: center; font-size: 14px; color: var(--text-muted); font-weight: 600; padding-top: 12px; border-top: 2px dashed #F1F5F9; }
     
@@ -161,11 +157,11 @@
     }
     .option-label:hover { background: #FFFFFF; border-color: #CBD5E1; transform: translateY(-2px); box-shadow: 0 8px 15px rgba(0,0,0,0.05); }
     .option-label input[type="radio"], .option-label input[type="checkbox"] { 
-      margin-right: 18px; width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); 
+      margin-right: 18px; width: 22px; height: 22px; cursor: pointer; accent-color: #8B5CF6; 
     }
     .option-label.selected { 
-      background: #FAF5FF; border-color: var(--primary); 
-      color: var(--primary-hover); font-weight: 800;
+      background: #FAF5FF; border-color: #8B5CF6; 
+      color: #7C3AED; font-weight: 800;
       box-shadow: 0 8px 20px rgba(139, 92, 246, 0.15); 
     }
     
@@ -185,7 +181,7 @@
       color: var(--text-muted); cursor: pointer; background-color: #FFFFFF; 
       transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
     }
-    .nav-box:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+    .nav-box:hover { border-color: #8B5CF6; color: #8B5CF6; transform: translateY(-2px); }
     .nav-box.answered { background: linear-gradient(135deg, #10B981, #059669); color: #FFF; border-color: transparent; box-shadow: 0 4px 10px rgba(16, 185, 129, 0.3); }
     .nav-box.active { 
       border-color: transparent; background: var(--gradient-btn); color: #FFF; 
@@ -193,13 +189,12 @@
     }
     
     .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(10px); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
-    .spinner { border: 4px solid #F3E8FF; border-top: 4px solid var(--primary); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite; }
+    .spinner { border: 4px solid #F3E8FF; border-top: 4px solid #8B5CF6; border-radius: 50%; width: 50px; height: 50px; animation: spin 1s cubic-bezier(0.55, 0.15, 0.45, 0.85) infinite; }
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     
     #result-section h1 { font-size: 70px; margin: 0 0 10px 0; animation: bounce 2s infinite; }
     @keyframes bounce { 0%, 20%, 50%, 80%, 100% {transform: translateY(0);} 40% {transform: translateY(-20px);} 60% {transform: translateY(-10px);} }
     
-    /* Watermark Ambient Glow Area (Light Theme Adjusted) */
     .watermark-container {
       position: fixed;
       bottom: 20px;
@@ -213,12 +208,12 @@
     .watermark-text {
       font-size: 13px;
       font-weight: 800;
-      color: rgba(71, 85, 105, 0.6); /* Slate color */
+      color: rgba(71, 85, 105, 0.6);
       letter-spacing: 1px;
       text-transform: uppercase;
     }
     .watermark-glow {
-      color: var(--primary);
+      color: #8B5CF6;
       text-shadow: 0 0 10px rgba(139, 92, 246, 0.4), 0 0 20px rgba(139, 92, 246, 0.2);
       animation: pulseAmbientLight 3s ease-in-out infinite alternate;
     }
@@ -232,7 +227,7 @@
       .iframe-container { padding: 15px; align-items: flex-start; } 
       .card { padding: 25px; border-radius: 28px; } 
       .header-title h2 { font-size: 26px; }
-      .header-logo { width: 180px; } /* Ukuran Logo HP disesuaikan agar proporsional */
+      .header-logo { width: 180px; }
       input[type="text"], input[type="password"], select { font-size: 14px; padding: 14px 18px; }
       button { font-size: 15px; padding: 14px 24px; }
       .jdh-row { flex-direction: column; align-items: flex-start; } 
@@ -246,7 +241,6 @@
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" onselectstart="return false;">
 
-  <!-- Watermark Element -->
   <div class="watermark-container">
     <span class="watermark-text">Powered By</span>
     <span class="watermark-text watermark-glow">Very Andika</span>
@@ -254,13 +248,12 @@
 
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
-    <p id="loadingText" style="margin-top:20px; font-weight:800; color:var(--primary); font-size: 15px; letter-spacing: 1px; text-transform: uppercase;">Menyiapkan...</p>
+    <p id="loadingText" style="margin-top:20px; font-weight:800; color:#8B5CF6; font-size: 15px; letter-spacing: 1px; text-transform: uppercase;">Menyiapkan...</p>
   </div>
 
   <div class="iframe-container">
     <div class="container">
       
-      <!-- Bagian Login -->
       <div id="login-section" class="card">
         <div class="header-title">
           <img src="https://i.ibb.co.com/zTHpGJ3W/20260513-105333-0000.png" alt="Logo SMANJO" class="header-logo">
@@ -284,7 +277,6 @@
         <p id="pesan-error" style="color:#BE123C; margin-top:20px; text-align:center; display:none; font-weight:700; font-size:14px; background: #FFF1F2; padding: 12px; border-radius: 12px; border: 1px solid #FECDD3;"></p>
       </div>
 
-      <!-- Bagian Dashboard -->
       <div id="dashboard-section" class="card">
         <div class="header-title"><h2>Konfirmasi Peserta</h2><p>Pastikan data diri kamu sudah benar ya! ✌️</p></div>
         <div class="dash-box">
@@ -292,7 +284,7 @@
             <tr><th>Nama Lengkap</th><td id="dash-nama">-</td></tr>
             <tr><th>Nomor Peserta</th><td id="dash-nisn">-</td></tr>
             <tr><th>Kelas</th><td id="dash-kelas">-</td></tr>
-            <tr><th>Mata Ujian</th><td id="dash-ujian" style="color:var(--primary);">-</td></tr>
+            <tr><th>Mata Ujian</th><td id="dash-ujian" style="color:#8B5CF6;">-</td></tr>
             <tr><th style="border:none;">Status Akses</th><td id="dash-status" style="border:none;">-</td></tr>
           </table>
         </div>
@@ -315,12 +307,11 @@
         <button class="btn-outline" onclick="location.reload()">Batal & Keluar</button>
       </div>
 
-      <!-- Bagian Ujian -->
       <div id="exam-section" class="card">
         <div class="exam-header">
           <div class="badge-qno" id="nomorSoal">Soal 1 / 10</div>
           <div class="badge-timer">⏱ <span id="timer">00:00</span></div>
-          <div class="student-info">Peserta: <span id="namaPeserta" style="color: var(--primary); font-weight: 800;"></span></div>
+          <div class="student-info">Peserta: <span id="namaPeserta" style="color: #8B5CF6; font-weight: 800;"></span></div>
         </div>
         
         <div class="badge-jenis" id="labelJenisSoal">Pilihan Ganda</div>
@@ -335,9 +326,8 @@
         <div class="nav-grid-container"><h4>Navigasi Soal:</h4><div class="nav-grid" id="navGridArea"></div></div>
       </div>
 
-      <!-- Bagian Selesai -->
       <div id="result-section" class="card" style="text-align:center; padding: 60px 30px;">
-        <h1>🎉</h1><h2 id="judul-selesai" style="color:var(--primary); font-size: 32px; font-weight: 800; margin-bottom: 15px;">Ujian Selesai!</h2>
+        <h1>🎉</h1><h2 id="judul-selesai" style="color:#8B5CF6; font-size: 32px; font-weight: 800; margin-bottom: 15px;">Ujian Selesai!</h2>
         <p id="teks-selesai" style="color:var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 30px; font-weight:600;">Jawaban kamu sudah aman terekam ke dalam server sekolah. Selamat beristirahat!</p>
         <button class="btn-outline" onclick="location.reload()" style="max-width: 200px; margin: 0 auto;">Kembali ke Awal</button>
       </div>
@@ -440,19 +430,19 @@
           let d = JSON.parse(saved); let pel = d.pelanggaran || 0;
           if(pel >= 4) { 
               localStorage.removeItem(sessionKey);
-              document.getElementById('dash-status').innerHTML = "<span style='color:var(--primary); font-weight:800;'>Siap (Memori HP Direset Guru) ✅</span>";
+              document.getElementById('dash-status').innerHTML = "<span style='color:#8B5CF6; font-weight:800;'>Siap (Memori HP Direset Guru) ✅</span>";
               status = "baru";
               teksTombolAktif = "Ya, Saya Mengerti & Mulai";
           }
           else if(d.endTime > Date.now()) { 
-              document.getElementById('dash-status').innerHTML = `<span style='color:var(--warning); font-weight:800;'>Lanjut (${pel}/4) ⏳</span>`; 
+              document.getElementById('dash-status').innerHTML = `<span style='color:#F59E0B; font-weight:800;'>Lanjut (${pel}/4) ⏳</span>`; 
               status = "lanjut"; teksTombolAktif = "Lanjutkan Ujian"; 
           }
           else { 
-              document.getElementById('dash-status').innerHTML = "<span style='color:var(--danger); font-weight:800;'>Waktu Habis ❌</span>"; status = "habis"; btn.innerText = "Sesi Berakhir"; btn.disabled = true; 
+              document.getElementById('dash-status').innerHTML = "<span style='color:#EF4444; font-weight:800;'>Waktu Habis ❌</span>"; status = "habis"; btn.innerText = "Sesi Berakhir"; btn.disabled = true; 
           }
         } else { 
-            document.getElementById('dash-status').innerHTML = "<span style='color:var(--primary); font-weight:800;'>Siap ✅</span>"; 
+            document.getElementById('dash-status').innerHTML = "<span style='color:#8B5CF6; font-weight:800;'>Siap ✅</span>"; 
         }
         
         if (status !== "habis") {
@@ -649,7 +639,7 @@
           document.getElementById('result-section').style.display = 'block';
           if(paksa) { 
               document.getElementById('judul-selesai').innerText = "AKSES DIBLOKIR!"; 
-              document.getElementById('judul-selesai').style.color = "var(--danger)"; 
+              document.getElementById('judul-selesai').style.color = "#EF4444"; 
               document.getElementById('teks-selesai').innerText = "Sistem mendeteksi 4x pelanggaran kecurangan. Ujian dihentikan paksa."; 
           }
       })
