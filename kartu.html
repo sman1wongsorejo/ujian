@@ -43,7 +43,7 @@
       border: 1px solid #F1F5F9;
     }
 
-    .admin-card img { width: 100px; margin-bottom: 20px; }
+    .admin-card img { width: 360px; margin-bottom: 20px; }
     .admin-card h2 { margin: 0 0 5px 0; font-weight: 800; color: var(--primary); }
     .admin-card p { margin: 0 0 25px 0; color: var(--text-muted); font-size: 14px; }
 
@@ -136,12 +136,12 @@
   <div id="login-admin-container">
     <div class="admin-card">
       <img src="https://i.ibb.co.com/zTHpGJ3W/20260513-105333-0000.png" alt="Logo SMANJO">
-      <h2>Portal Admin</h2>
-      <p>Akses khusus Panitia Ujian SMANJO</p>
+      <h2>PORTAL ADMIN</h2>
+      <p>Akses khusus Panitia Ujian SMAN 1 Wongsorejo</p>
       
       <div class="input-group">
         <label>Password Akses</label>
-        <input type="password" id="adminPass" placeholder="Masukkan password admin..." onkeypress="handleEnter(event)">
+        <input type="password" id="adminPass" placeholder="Masukkan password admin" onkeypress="handleEnter(event)">
       </div>
       
       <button class="btn-login" id="btnLoginAdmin" onclick="loginAdmin()">Buka Data Kartu</button>
@@ -240,11 +240,10 @@
           const kartuHTML = `
             <div class="kartu">
               <div class="kartu-header">
-                <img src="${LOGO_URL}" alt="Logo" class="kartu-logo">
                 <div class="kop-sekolah">
                   <div class="kop-1">Pemerintah Provinsi Jawa Timur</div>
-                  <div class="kop-2">SMAN 1 WONGSOREJO</div>
-                  <div class="kop-3">KARTU PESERTA CBT</div>
+                  <div class="kop-2">SMA NEGERI 1 WONGSOREJO</div>
+                  <div class="kop-3">KARTU LOGIN UJIAN CBT</div>
                 </div>
               </div>
               
@@ -252,7 +251,7 @@
                 <table>
                   <tr><td>Nama Siswa</td><td>:</td><td>${namaTampil}</td></tr>
                   <tr><td>Kelas / Jurusan</td><td>:</td><td>${siswa.kelas}</td></tr>
-                  <tr><td>USER (NISN)</td><td>:</td><td>${siswa.nisn}</td></tr>
+                  <tr><td>USER (NIS)</td><td>:</td><td>${siswa.nisn}</td></tr>
                   <tr><td>PASSWORD</td><td>:</td><td><span class="box-password">${siswa.password}</span></td></tr>
                 </table>
               </div>
