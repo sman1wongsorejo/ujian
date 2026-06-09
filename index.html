@@ -204,7 +204,7 @@
     
     #result-section h1 { font-size: 60px; margin: 0 0 10px 0; }
     
-    /* --- WATERMARK FOOTER STYLE --- */
+    /* --- WATERMARK FOOTER STYLE (DIPERBESAR & ANIMASI MELAYANG) --- */
     .watermark-container {
       display: flex;
       justify-content: center;
@@ -214,21 +214,27 @@
       pointer-events: none;
     }
     .watermark-text {
-      font-size: 12px;
+      font-size: 14px; /* Ukuran diperbesar */
       font-weight: 600;
       color: rgba(38, 38, 38, 0.5);
       letter-spacing: 0.5px;
     }
-    /* IG Theme Ambient Glow for Watermark */
     .watermark-glow {
       color: var(--primary);
-      text-shadow: 0 0 10px rgba(225, 48, 108, 0.4);
-      animation: pulseAmbientLight 3s ease-in-out infinite alternate;
+      display: inline-block; /* Diperlukan agar animasi transform scale/translate berfungsi pada teks inline */
+      animation: pulseAndFloat 2s ease-in-out infinite alternate;
     }
 
-    @keyframes pulseAmbientLight {
-      0% { text-shadow: 0 0 5px rgba(225, 48, 108, 0.3), 0 0 10px rgba(240, 148, 51, 0.2); }
-      100% { text-shadow: 0 0 10px rgba(225, 48, 108, 0.6), 0 0 20px rgba(188, 24, 136, 0.4), 0 0 30px rgba(240, 148, 51, 0.3); }
+    /* Animasi gabungan: Glowing, Membesar (Scale), dan Melayang (TranslateY) */
+    @keyframes pulseAndFloat {
+      0% { 
+        text-shadow: 0 0 5px rgba(225, 48, 108, 0.3); 
+        transform: scale(1) translateY(0); 
+      }
+      100% { 
+        text-shadow: 0 0 15px rgba(225, 48, 108, 0.8), 0 0 25px rgba(240, 148, 51, 0.5); 
+        transform: scale(1.08) translateY(-2px); 
+      }
     }
 
     @media (max-width: 600px) { 
@@ -242,7 +248,7 @@
       .jdh-row select { margin-left: 0; margin-top: 10px; width: 100%; } 
       .alert-warning { font-size: 12px; padding: 12px; }
       .nav-box { width: 38px; height: 38px; font-size: 12px; }
-      .watermark-text { font-size: 10px; }
+      .watermark-text { font-size: 12px; } /* Ukuran di mobile juga diperbesar */
     }
   </style>
 </head>
@@ -334,6 +340,7 @@
         <button class="btn-outline" onclick="location.reload()" style="max-width: 200px; margin: 0 auto;">Kembali ke Awal</button>
       </div>
 
+      <!-- WATERMARK DIJADIKAN FOOTER DI SINI -->
       <div class="watermark-container">
         <span class="watermark-text">© 2026 Very_Andika.</span>
         <span class="watermark-text watermark-glow">All Rights Reserved</span>
