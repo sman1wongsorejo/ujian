@@ -524,6 +524,7 @@
       if(jns === "PGK") { lbl.innerText = "Pilihan Ganda Kompleks (Bisa milih > 1)"; }
       else if(jns === "BS") { lbl.innerText = "Pilihan Benar / Salah"; }
       else if(jns === "JDH") { lbl.innerText = "Menjodohkan (Pilih Pasangan Tepat)"; }
+      else if(jns === "ESAI" || jns === "ESSAY") { lbl.innerText = "Uraian / Esai"; }
       else { lbl.innerText = "Pilihan Ganda"; }
 
       const pilArea = document.getElementById('pilihanJawaban'); pilArea.innerHTML = '';
@@ -545,6 +546,29 @@
         }
         pilArea.innerHTML = htmlJdh;
       } 
+      // === TAMBAHAN LOGIKA UNTUK MENAMPILKAN SOAL ESAI ===
+      else if (jns === "ESAI" || jns === "ESSAY") {
+        pilArea.innerHTML = `
+          <div style="background: rgba(225, 48, 108, 0.05); border: 1px dashed var(--primary); padding: 25px; border-radius: 8px; text-align: center; margin-bottom: 15px;">
+            <span style="font-size: 24px; display: block; margin-bottom: 10px;">📝</span>
+            <strong style="color: var(--primary); font-size: 15px;">Soal Uraian / Esai</strong>
+            <p style="color: var(--text-main); font-size: 14px; margin: 8px 0 0 0; font-weight: 500;">
+              Silakan kerjakan soal ini pada lembar jawaban kertas yang telah disediakan.
+            </p>
+          </div>
+        `;
+        
+        // Otomatis tandai sudah dijawab agar indikator nomor soal jadi terisi
+        if (!jawabanSiswa[id]) {
+          jawabanSiswa[id] = "Dikerjakan di kertas";
+          let sv = JSON.parse(localStorage.getItem(sessionKey)); 
+          if (sv) {
+            sv.jawaban = jawabanSiswa; 
+            localStorage.setItem(sessionKey, JSON.stringify(sv));
+          }
+        }
+      }
+      // ======================================================
       else {
         opsi.forEach(h => {
           if(s.pilihan[h]) {
