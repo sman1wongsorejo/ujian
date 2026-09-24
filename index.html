@@ -4,36 +4,34 @@
   <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
-  <title>CBT AKM SMANJO - Mobile Legends Theme</title>
+  <title>CBT AKM SMANJO - Land of Dawn Theme</title>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root { 
-      /* TRUE MLBB COLOR PALETTE */
-      --primary: #d9a84a; /* Classic MLBB Gold */
-      --primary-hover: #f6d271; /* Bright MLBB Gold */
-      --primary-dark: #8c6827; /* Dark Gold for borders */
-      --bg-base: #0b101a; /* Deep Navy Blue (Lobby Background) */
-      --card-bg: rgba(18, 24, 38, 0.95); /* UI Panel Background */
-      --card-border: #d9a84a;
-      --text-main: #e0e6ed; /* Light Slate/White for readability */
-      --text-muted: #8392a5; /* Muted Slate */
-      --accent: #2cb3ff; /* MLBB Cyan/Blue */
-      --danger: #e02828; /* MLBB Crimson Red */
-      --warning: #ffb300; /* MLBB Orange */
+      /* MLBB LIGHT THEME (LAND OF DAWN) PALETTE */
+      --primary: #c29330; /* Gold khas MLBB yang disesuaikan untuk background terang */
+      --primary-hover: #d9a84a; 
+      --primary-dark: #9e7522; 
       
-      /* Game UI Gradient - Top to Bottom like MLBB Buttons */
+      --bg-base: #f0f4f8; /* Background utama terang (awan/langit fajar) */
+      --card-bg: #ffffff; /* Panel UI Putih Bersih */
+      --card-border: #d9a84a;
+      
+      --text-main: #2b3a4a; /* Teks utama gelap untuk keterbacaan maksimal */
+      --text-muted: #64748b; /* Teks sekunder */
+      
+      --accent: #0284c7; /* MLBB Cyan/Blue versi siang */
+      --danger: #dc2626; /* MLBB Crimson Red versi jelas */
+      --warning: #d97706; /* MLBB Orange */
+      
+      /* Game UI Gradient Button - Tetap Emas */
       --gradient-btn: linear-gradient(180deg, #f6cf6a 0%, #c48d28 100%);
-      --gradient-bg: radial-gradient(circle at 50% 0%, #1a253a 0%, #0b101a 70%);
+      --gradient-bg: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
     }
     
     body, html { 
       font-family: 'Poppins', sans-serif; 
-      background-color: var(--bg-base);
-      background-image: 
-        radial-gradient(circle at 15% 20%, rgba(44, 179, 255, 0.05) 0%, transparent 30%),
-        radial-gradient(circle at 85% 80%, rgba(217, 168, 74, 0.08) 0%, transparent 40%),
-        var(--gradient-bg);
-      background-attachment: fixed;
+      background: var(--gradient-bg);
       color: var(--text-main); 
       margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden;
       -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
@@ -43,20 +41,15 @@
       -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
     }
 
-    /* ANIMASI MLBB STYLE */
+    /* ANIMASI MLBB STYLE YANG DIPERINGAN */
     @keyframes heroSpawn {
-      0% { opacity: 0; transform: translateY(30px) scale(0.95); filter: brightness(2) drop-shadow(0 0 20px var(--primary)); }
-      100% { opacity: 1; transform: translateY(0) scale(1); filter: brightness(1) drop-shadow(0 0 0 transparent); }
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
     }
-    @keyframes borderGlow {
-      0% { box-shadow: 0 0 10px rgba(217, 168, 74, 0.2), inset 0 0 5px rgba(217, 168, 74, 0.1); }
-      50% { box-shadow: 0 0 25px rgba(217, 168, 74, 0.4), inset 0 0 10px rgba(217, 168, 74, 0.2); }
-      100% { box-shadow: 0 0 10px rgba(217, 168, 74, 0.2), inset 0 0 5px rgba(217, 168, 74, 0.1); }
-    }
-    @keyframes shimmer {
-      0% { filter: brightness(1); }
-      50% { filter: brightness(1.2); }
-      100% { filter: brightness(1); }
+    @keyframes pulseSoft {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
     }
 
     .iframe-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; position: relative; z-index: 1;}
@@ -64,182 +57,171 @@
     
     .card { 
       background: var(--card-bg); 
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      border: 1px solid rgba(217, 168, 74, 0.3);
-      border-top: 3px solid var(--primary);
-      border-bottom: 3px solid var(--primary-dark);
-      border-radius: 6px; 
+      border: 1px solid rgba(194, 147, 48, 0.3);
+      border-top: 4px solid var(--primary);
+      border-bottom: 4px solid var(--primary-dark);
+      border-radius: 8px; 
       padding: 40px; 
-      animation: heroSpawn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards, borderGlow 4s infinite alternate;
+      animation: heroSpawn 0.4s ease-out forwards;
       position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06); /* Shadow super ringan */
     }
-    /* Aksen sudut ala game MOBA */
+    
+    /* Aksen sudut ala game MOBA (Tetap dipertahankan) */
     .card::before, .card::after {
       content: ''; position: absolute; width: 25px; height: 25px; border: 2px solid var(--primary-hover); pointer-events: none;
     }
-    .card::before { top: -3px; left: -1px; border-right: none; border-bottom: none; }
-    .card::after { bottom: -3px; right: -1px; border-left: none; border-top: none; }
+    .card::before { top: -4px; left: -1px; border-right: none; border-bottom: none; }
+    .card::after { bottom: -4px; right: -1px; border-left: none; border-top: none; }
     
     .header-title { text-align: center; margin-bottom: 35px; }
     
-    .header-logo { width: 390px; max-width: 100%; height: auto; margin-bottom: 20px; filter: drop-shadow(0px 0px 15px rgba(217, 168, 74, 0.4)); transition: transform 0.4s ease; }
-    .header-logo:hover { transform: scale(1.05); filter: drop-shadow(0px 0px 25px rgba(217, 168, 74, 0.8)); }
+    .header-logo { width: 390px; max-width: 100%; height: auto; margin-bottom: 20px; transition: transform 0.3s ease; }
+    .header-logo:hover { transform: scale(1.03); }
     
     .header-title h2 { 
-      margin: 0; color: var(--primary-hover); 
+      margin: 0; color: var(--primary-dark); 
       font-family: 'Cinzel', serif; font-weight: 800; font-size: 32px; 
-      letter-spacing: 1.5px; text-shadow: 0 2px 10px rgba(217, 168, 74, 0.5); 
+      letter-spacing: 1.5px; 
       text-transform: uppercase;
     }
-    .header-title p { margin: 5px 0 0; color: var(--text-muted); font-weight: 500; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;}
+    .header-title p { margin: 5px 0 0; color: var(--text-muted); font-weight: 600; font-size: 14px; letter-spacing: 2px; text-transform: uppercase;}
     
     .form-group { margin-bottom: 20px; text-align: left; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; color: var(--primary); font-family: 'Cinzel', serif; letter-spacing: 1px;}
+    .form-group label { display: block; margin-bottom: 8px; font-weight: 700; font-size: 14px; color: var(--primary-dark); font-family: 'Cinzel', serif; letter-spacing: 1px;}
     
     .input-wrapper { position: relative; display: block; width: 100%; }
     
     input[type="text"], input[type="password"], select { 
       width: 100%; padding: 14px 16px; 
-      border: 1px solid #2a344a; border-radius: 4px; 
+      border: 1px solid #cbd5e1; border-radius: 6px; 
       box-sizing: border-box; font-family: 'Poppins', sans-serif; font-size: 14px; font-weight: 500;
-      transition: all 0.3s ease; 
-      background: #090c14; /* Darker inner background */
+      transition: all 0.2s ease; 
+      background: #f8fafc; /* Background input lebih terang */
       color: var(--text-main);
-      box-shadow: inset 0 2px 6px rgba(0,0,0,0.6);
     }
     input[type="password"] { padding-right: 50px; }
-    input::placeholder { color: #506075; font-weight: 400; }
+    input::placeholder { color: #94a3b8; font-weight: 400; }
     
     select { 
       cursor: pointer; appearance: none; 
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d9a84a' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
+      background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23c29330' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
       background-repeat: no-repeat; background-position: right 1rem center; background-size: 1em; 
     }
-    select option { background: #121826; color: var(--text-main); }
+    select option { background: #ffffff; color: var(--text-main); }
 
     input[type="text"]:focus, input[type="password"]:focus, select:focus { 
-      border-color: var(--primary-hover); outline: none; 
-      background: #101622; 
-      box-shadow: 0 0 12px rgba(217, 168, 74, 0.25), inset 0 0 5px rgba(217, 168, 74, 0.1);
+      border-color: var(--primary); outline: none; 
+      background: #ffffff; 
+      box-shadow: 0 0 0 3px rgba(194, 147, 48, 0.15); /* Ring glow ringan */
     }
     
     .toggle-pw-btn { 
       position: absolute !important; right: 10px !important; top: 50% !important; transform: translateY(-50%) !important; 
       background: transparent !important; border: none !important; padding: 8px !important; 
       display: flex !important; align-items: center !important; justify-content: center !important;
-      color: var(--primary) !important; cursor: pointer !important; border-radius: 50% !important; 
+      color: var(--text-muted) !important; cursor: pointer !important; border-radius: 50% !important; 
       transition: all 0.2s ease !important;
       width: auto !important; margin: 0 !important; box-shadow: none !important; height: auto !important;
     }
-    .toggle-pw-btn:hover { color: var(--primary-hover) !important; filter: drop-shadow(0 0 5px var(--primary)); }
+    .toggle-pw-btn:hover { color: var(--primary) !important; }
     .toggle-pw-btn svg { width: 20px; height: 20px; }
     
     button { 
       background: var(--gradient-btn); 
-      color: #3a2400; /* Dark brown/black text for gold button */
+      color: #3a2400; 
       border: 1px solid #ffeba1; 
       border-bottom: 3px solid #8c6827;
       padding: 14px 24px; 
-      border-radius: 4px; cursor: pointer; 
+      border-radius: 6px; cursor: pointer; 
       font-family: 'Cinzel', serif; font-weight: 800; font-size: 16px; letter-spacing: 1.2px;
       width: 100%; margin-top: 15px; 
       transition: all 0.2s ease; 
-      box-shadow: 0 4px 15px rgba(217, 168, 74, 0.3);
+      box-shadow: 0 4px 10px rgba(217, 168, 74, 0.2);
       text-transform: uppercase;
     }
     button:hover:not(:disabled) { 
-      animation: shimmer 1.5s infinite; 
-      box-shadow: 0 6px 20px rgba(246, 210, 113, 0.5);
+      box-shadow: 0 6px 15px rgba(194, 147, 48, 0.3);
       transform: translateY(-2px);
     }
-    button:active:not(:disabled) { transform: translateY(1px); border-bottom-width: 1px; box-shadow: 0 2px 10px rgba(217, 168, 74, 0.4); }
-    button:disabled { background: #2a344a !important; color: #506075 !important; border-color: #1a253a !important; box-shadow: none !important; cursor: not-allowed !important; }
+    button:active:not(:disabled) { transform: translateY(1px); border-bottom-width: 1px; box-shadow: 0 2px 5px rgba(217, 168, 74, 0.3); }
+    button:disabled { background: #e2e8f0 !important; color: #94a3b8 !important; border-color: #cbd5e1 !important; box-shadow: none !important; cursor: not-allowed !important; }
     
     button.btn-success { 
-      background: linear-gradient(180deg, #42b6f5 0%, #0d79c6 100%); 
+      background: linear-gradient(180deg, #38bdf8 0%, #0284c7 100%); 
       color: #ffffff; 
-      border-color: #8ed3ff;
-      border-bottom: 3px solid #00508c;
-      box-shadow: 0 4px 15px rgba(44, 179, 255, 0.3);
+      border-color: #bae6fd;
+      border-bottom: 3px solid #0369a1;
+      box-shadow: 0 4px 10px rgba(2, 132, 199, 0.2);
     }
-    button.btn-success:hover:not(:disabled) { box-shadow: 0 6px 20px rgba(44, 179, 255, 0.5); }
+    button.btn-success:hover:not(:disabled) { box-shadow: 0 6px 15px rgba(2, 132, 199, 0.3); }
     
     button.btn-outline { 
-      background: rgba(18, 24, 38, 0.5); 
-      color: var(--primary); 
+      background: #ffffff; 
+      color: var(--primary-dark); 
       border: 1px solid var(--primary); 
       border-bottom: 3px solid var(--primary-dark);
       box-shadow: none; font-weight: 700;
     }
     button.btn-outline:hover:not(:disabled) { 
-      background: rgba(217, 168, 74, 0.1); 
+      background: #fffbeb; 
       border-color: var(--primary-hover); 
-      color: var(--primary-hover);
-      box-shadow: inset 0 0 10px rgba(217,168,74,0.2);
-      animation: none;
     }
 
     #dashboard-section, #exam-section, #result-section { display: none; }
     
     .dash-box { 
-      background: rgba(9, 12, 20, 0.6); 
-      padding: 20px; border-radius: 4px; 
-      border: 1px solid #2a344a; 
+      background: #f8fafc; 
+      padding: 20px; border-radius: 6px; 
+      border: 1px solid #e2e8f0; 
       margin-bottom: 20px; 
-      box-shadow: inset 0 0 15px rgba(0,0,0,0.8);
     }
     .dash-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
-    .dash-table th, .dash-table td { padding: 14px 10px; border-bottom: 1px solid rgba(217, 168, 74, 0.15); }
-    .dash-table th { width: 40%; color: var(--primary); font-family: 'Cinzel', serif; font-weight: 600; letter-spacing: 0.5px;}
+    .dash-table th, .dash-table td { padding: 14px 10px; border-bottom: 1px solid #e2e8f0; }
+    .dash-table th { width: 40%; color: var(--primary-dark); font-family: 'Cinzel', serif; font-weight: 700; letter-spacing: 0.5px;}
     .dash-table td { font-weight: 600; color: var(--text-main); }
     
     .alert-warning { 
-      background: rgba(224, 40, 40, 0.08); 
-      border: 1px solid rgba(224, 40, 40, 0.2); 
+      background: #fef2f2; 
+      border: 1px solid #fca5a5; 
       border-left: 4px solid var(--danger); 
-      border-right: 4px solid var(--danger);
       padding: 16px; margin-bottom: 25px; border-radius: 4px; 
-      font-size: 13px; color: var(--text-main); line-height: 1.6; font-weight: 400;
-      box-shadow: 0 0 15px rgba(224, 40, 40, 0.1);
+      font-size: 13px; color: var(--text-main); line-height: 1.6; font-weight: 500;
     }
-    .alert-warning strong { color: var(--danger); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 16px; font-weight: 700; font-family: 'Cinzel', serif; letter-spacing: 1px; text-shadow: 0 0 8px rgba(224,40,40,0.4);}
+    .alert-warning strong { color: var(--danger); display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 16px; font-weight: 800; font-family: 'Cinzel', serif; letter-spacing: 1px;}
     
     .exam-header { 
       display: flex; justify-content: space-between; align-items: center; 
       background: transparent; padding: 0 0 15px 0; 
       margin-bottom: 20px; flex-wrap: wrap; gap: 12px;
-      border-bottom: 1px solid rgba(217, 168, 74, 0.2);
+      border-bottom: 1px solid #e2e8f0;
     }
-    .badge-qno { font-family: 'Cinzel', serif; font-weight: 800; font-size: 20px; color: var(--primary-hover); text-shadow: 0 0 5px rgba(217,168,74,0.4); }
+    .badge-qno { font-family: 'Cinzel', serif; font-weight: 800; font-size: 20px; color: var(--primary-dark); }
     .badge-jenis { 
-      background: rgba(44, 179, 255, 0.1); 
-      border: 1px solid var(--accent); 
+      background: #e0f2fe; 
+      border: 1px solid #7dd3fc; 
       color: var(--accent); 
-      padding: 4px 12px; border-radius: 2px; /* Sharper edges like MLBB */
-      font-size: 12px; font-weight: 600; margin-bottom: 15px; display: inline-block; 
+      padding: 4px 12px; border-radius: 4px; 
+      font-size: 12px; font-weight: 700; margin-bottom: 15px; display: inline-block; 
       text-transform: uppercase; letter-spacing: 1px;
-      box-shadow: 0 0 8px rgba(44, 179, 255, 0.15);
     }
     .badge-timer { 
       color: var(--danger); font-family: 'Cinzel', serif; font-weight: 800; font-size: 18px; 
       display: flex; align-items: center; gap: 6px; 
-      text-shadow: 0 0 10px rgba(224, 40, 40, 0.5);
-      animation: borderGlow 1s infinite alternate;
-      border: 1px solid var(--danger); padding: 4px 12px; border-radius: 4px; background: rgba(224, 40, 40, 0.08);
+      border: 1px solid #fca5a5; padding: 4px 12px; border-radius: 6px; background: #fef2f2;
     }
-    .student-info { width: 100%; text-align: left; font-size: 13px; color: var(--text-muted); padding-top: 10px; border-top: 1px dashed rgba(217, 168, 74, 0.2); }
+    .student-info { width: 100%; text-align: left; font-size: 13px; color: var(--text-muted); padding-top: 10px; border-top: 1px dashed #e2e8f0; font-weight: 500;}
     
     .question-text { font-size: 16px; font-weight: 500; line-height: 1.8; margin-bottom: 25px; color: var(--text-main); }
     
-    /* STYLE PILIHAN JAWABAN (MOBA BUTTONS) */
+    /* STYLE PILIHAN JAWABAN (MOBA BUTTONS TERANG) */
     .option-label { 
       display: flex; align-items: center; 
-      background: #151c2c; /* Panel Blue */
-      padding: 16px 20px; margin-bottom: 15px; border-radius: 4px; 
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); 
-      border: 1px solid #26334d; font-size: 15px; font-weight: 500;
-      color: var(--text-muted);
+      background: #f8fafc; 
+      padding: 16px 20px; margin-bottom: 15px; border-radius: 6px; 
+      cursor: pointer; transition: all 0.2s ease-out; 
+      border: 1px solid #cbd5e1; font-size: 15px; font-weight: 500;
+      color: var(--text-main);
       position: relative;
       overflow: hidden;
     }
@@ -247,68 +229,64 @@
       content: ''; position: absolute; top: 0; left: 0; height: 100%; width: 4px; background: transparent; transition: 0.3s;
     }
     .option-label:hover { 
-      background: #1a2336; 
-      border-color: rgba(217, 168, 74, 0.5); 
-      color: var(--text-main);
-      transform: translateX(6px);
-      box-shadow: -5px 0 15px rgba(217, 168, 74, 0.1);
+      background: #ffffff; 
+      border-color: var(--primary); 
+      transform: translateX(4px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
     }
     .option-label input[type="radio"], .option-label input[type="checkbox"] { 
-      margin-right: 15px; width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); 
-      filter: drop-shadow(0 0 2px var(--primary));
+      margin-right: 15px; width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary-dark); 
     }
     .option-label.selected { 
       border-color: var(--primary); 
-      background: linear-gradient(90deg, rgba(217, 168, 74, 0.15) 0%, rgba(21, 28, 44, 0) 100%);
+      background: #fffbeb;
       font-weight: 600;
-      color: var(--primary-hover);
-      transform: translateX(10px);
-      box-shadow: -5px 0 15px rgba(217, 168, 74, 0.2);
+      color: var(--primary-dark);
+      transform: translateX(6px);
+      box-shadow: 0 4px 10px rgba(194, 147, 48, 0.08);
     }
-    .option-label.selected::before { background: var(--primary); box-shadow: 0 0 10px var(--primary); }
+    .option-label.selected::before { background: var(--primary); }
     
     .jdh-row { 
       display: flex; align-items: center; justify-content: space-between; 
-      background: #151c2c; padding: 16px; margin-bottom: 12px; 
-      border-radius: 4px; border: 1px solid #26334d; transition: 0.3s; 
+      background: #f8fafc; padding: 16px; margin-bottom: 12px; 
+      border-radius: 6px; border: 1px solid #cbd5e1; transition: 0.3s; 
     }
-    .jdh-row:hover { background: #1a2336; border-color: rgba(217, 168, 74, 0.5); box-shadow: 0 0 10px rgba(217,168,74,0.15);}
+    .jdh-row:hover { background: #ffffff; border-color: var(--primary); box-shadow: 0 4px 10px rgba(0,0,0,0.03);}
     .jdh-row label { font-weight: 500; flex: 1; font-size: 14px; color: var(--text-main); }
     .jdh-row select { 
-      flex: 1; margin-left: 15px; padding: 12px; border-radius: 4px; 
-      border: 1px solid #2a344a; background-color: #090c14; color: var(--primary-hover); font-weight: 600;
+      flex: 1; margin-left: 15px; padding: 12px; border-radius: 6px; 
+      border: 1px solid #cbd5e1; background-color: #ffffff; color: var(--primary-dark); font-weight: 600;
     }
 
     .nav-buttons { display: flex; gap: 15px; margin-top: 35px; }
-    .nav-grid-container { margin-top: 40px; padding-top: 25px; border-top: 1px dashed rgba(217, 168, 74, 0.2); }
-    .nav-grid-container h4 { margin-top: 0; color: var(--primary); font-family: 'Cinzel', serif; font-weight: 700; font-size: 16px; letter-spacing: 1px;}
+    .nav-grid-container { margin-top: 40px; padding-top: 25px; border-top: 1px dashed #e2e8f0; }
+    .nav-grid-container h4 { margin-top: 0; color: var(--primary-dark); font-family: 'Cinzel', serif; font-weight: 700; font-size: 16px; letter-spacing: 1px;}
     .nav-grid { display: flex; flex-wrap: wrap; gap: 10px; }
     
-    /* MAP MINIMAP STYLE NAV */
+    /* MAP MINIMAP STYLE NAV TERANG */
     .nav-box { 
       width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; 
-      border: 2px solid #26334d; border-radius: 4px; font-size: 14px; font-weight: 700; 
-      color: var(--text-muted); cursor: pointer; background-color: #151c2c; 
-      transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+      border: 2px solid #cbd5e1; border-radius: 6px; font-size: 14px; font-weight: 700; 
+      color: var(--text-muted); cursor: pointer; background-color: #f8fafc; 
+      transition: all 0.2s ease; 
       position: relative;
     }
-    .nav-box:hover { border-color: var(--primary); transform: translateY(-2px); box-shadow: 0 3px 8px rgba(217,168,74,0.2); color: var(--primary-hover);}
+    .nav-box:hover { border-color: var(--primary); transform: translateY(-2px); color: var(--primary-dark);}
     .nav-box.answered { 
-      background: linear-gradient(180deg, #d9a84a 0%, #8c6827 100%); 
-      border-color: #f6d271; color: #3a2400; 
-      box-shadow: 0 0 8px rgba(217, 168, 74, 0.4);
+      background: linear-gradient(180deg, #d9a84a 0%, #a67c2e 100%); 
+      border-color: #e6b850; color: #ffffff; 
     }
     .nav-box.active { 
-      background: #000; color: var(--accent); 
-      border: 2px solid var(--accent); 
-      box-shadow: 0 0 10px var(--accent), inset 0 0 5px var(--accent);
+      background: var(--text-main); color: #ffffff; 
+      border: 2px solid var(--text-main); 
       transform: scale(1.1);
       z-index: 2;
     }
     
-    .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(11, 16, 26, 0.95); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
+    .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.9); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
     
-    /* Magic Circle Loader */
+    /* Magic Circle Loader Terang */
     .spinner { 
       width: 60px; height: 60px;
       border: 4px solid transparent; 
@@ -316,29 +294,24 @@
       border-bottom: 4px solid var(--accent);
       border-radius: 50%; 
       animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; 
-      box-shadow: 0 0 20px rgba(217, 168, 74, 0.3), inset 0 0 20px rgba(44, 179, 255, 0.3);
     }
     @keyframes spin { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
     
-    #result-section h1 { font-size: 70px; margin: 0 0 15px 0; filter: drop-shadow(0 0 20px var(--primary-hover)); }
+    #result-section h1 { font-size: 70px; margin: 0 0 15px 0; }
     
     /* --- WATERMARK FOOTER STYLE --- */
     .watermark-container {
       display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 30px; pointer-events: none;
     }
-    .watermark-text { font-size: 14px; font-weight: 600; color: rgba(217, 168, 74, 0.4); letter-spacing: 1px; font-family: 'Cinzel', serif;}
+    .watermark-text { font-size: 14px; font-weight: 600; color: #94a3b8; letter-spacing: 1px; font-family: 'Cinzel', serif;}
     .watermark-glow {
-      color: var(--primary-hover); display: inline-block; 
-      animation: pulseAndFloat 2.5s ease-in-out infinite alternate;
-    }
-    @keyframes pulseAndFloat {
-      0% { text-shadow: 0 0 5px rgba(217, 168, 74, 0.2); transform: scale(1) translateY(0); }
-      100% { text-shadow: 0 0 15px rgba(217, 168, 74, 0.6), 0 0 25px rgba(44, 179, 255, 0.4); transform: scale(1.05) translateY(-2px); }
+      color: var(--primary-dark); display: inline-block; 
+      animation: pulseSoft 2.5s ease-in-out infinite alternate;
     }
 
     @media (max-width: 600px) { 
       .iframe-container { padding: 10px; align-items: flex-start; } 
-      .card { padding: 25px 20px; border-radius: 4px; min-height: 100vh;} 
+      .card { padding: 25px 20px; border-radius: 6px; min-height: 100vh; box-shadow: none; border-left: none; border-right: none;} 
       .header-title h2 { font-size: 24px; }
       .header-logo { width: 100%; max-width: 300px; }
       input[type="text"], input[type="password"], select { font-size: 14px; padding: 12px 14px; }
@@ -355,7 +328,7 @@
 
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
-    <p id="loadingText" style="margin-top:25px; font-weight:700; font-family:'Cinzel', serif; color:var(--primary-hover); font-size: 16px; letter-spacing: 2px; text-shadow: 0 0 10px var(--primary);">Menyiapkan...</p>
+    <p id="loadingText" style="margin-top:25px; font-weight:800; font-family:'Cinzel', serif; color:var(--primary-dark); font-size: 16px; letter-spacing: 2px;">Menyiapkan...</p>
   </div>
 
   <div class="iframe-container">
@@ -382,7 +355,7 @@
           </div>
         </div>
         <button onclick="prosesLogin()" id="btnLogin">ENTER BATTLEFIELD</button>
-        <p id="pesan-error" style="color:var(--danger); margin-top:15px; text-align:center; display:none; font-weight:600; font-size:14px; text-shadow: 0 0 5px rgba(224,40,40,0.5);"></p>
+        <p id="pesan-error" style="color:var(--danger); margin-top:15px; text-align:center; display:none; font-weight:600; font-size:14px;"></p>
       </div>
 
       <!-- DASHBOARD SECTION -->
@@ -393,7 +366,7 @@
             <tr><th>Nama Player</th><td id="dash-nama">-</td></tr>
             <tr><th>ID Peserta</th><td id="dash-nisn">-</td></tr>
             <tr><th>Tier / Kelas</th><td id="dash-kelas">-</td></tr>
-            <tr><th>Misi (Mata Ujian)</th><td id="dash-ujian" style="color:var(--primary-hover); text-shadow: 0 0 5px rgba(217,168,74,0.5);">-</td></tr>
+            <tr><th>Misi (Mata Ujian)</th><td id="dash-ujian" style="color:var(--primary-dark);">-</td></tr>
             <tr><th style="border:none;">Status Akses</th><td id="dash-status" style="border:none;">-</td></tr>
           </table>
         </div>
@@ -401,13 +374,13 @@
         <div class="alert-warning" id="box-peringatan" style="display: block; width: 100%; box-sizing: border-box;">
           <strong>🚨 RULES OF SURVIVAL (HUKUMAN)</strong>
           Sistem akan <b>MEMBLOKIR PERMANEN (BANNED)</b> ujianmu jika 4x melakukan:
-          <ul style="margin-top: 10px; margin-bottom: 12px; padding-left: 20px; color: #ff9999;">
+          <ul style="margin-top: 10px; margin-bottom: 12px; padding-left: 20px; color: var(--danger);">
             <li>Pindah tab / minimize browser (AFK)</li>
             <li>Buka aplikasi lain (WA, Tele, IG, Map Hack)</li>
             <li>Layar HP mati / terkunci / split screen</li>
           </ul>
-          <div style="font-size: 13px; border-top: 1px dashed rgba(224,40,40,0.3); padding-top: 12px; margin-top: 10px; line-height: 1.5;">
-            <p style="margin: 0 0 6px 0; color: var(--text-muted);"><i>*Buff: Atur waktu 'Layar Mati' (Sleep) di HP minimal 10 menit.</i></p>
+          <div style="font-size: 13px; border-top: 1px dashed #fca5a5; padding-top: 12px; margin-top: 10px; line-height: 1.5;">
+            <p style="margin: 0 0 6px 0; color: #991b1b;"><i>*Buff: Atur waktu 'Layar Mati' (Sleep) di HP minimal 10 menit.</i></p>
             <p style="margin: 0; color: var(--text-main);"><b>💡 Catatan:</b> Jika layar mendadak blank karena melanggar, silakan <b>refresh (Recall)</b> untuk login ulang.</p>
           </div>
         </div>
@@ -421,7 +394,7 @@
         <div class="exam-header">
           <div class="badge-qno" id="nomorSoal">Soal 1 / 10</div>
           <div class="badge-timer"><span id="timer">00:00</span></div>
-          <div class="student-info">Player Aktif: <span id="namaPeserta" style="color: var(--primary-hover); font-weight: 700; text-shadow: 0 0 5px rgba(217,168,74,0.5);"></span></div>
+          <div class="student-info">Player Aktif: <span id="namaPeserta" style="color: var(--primary-dark); font-weight: 700;"></span></div>
         </div>
         
         <div class="badge-jenis" id="labelJenisSoal">Pilihan Ganda</div>
@@ -438,7 +411,7 @@
 
       <!-- RESULT SECTION -->
       <div id="result-section" class="card" style="text-align:center; padding: 70px 30px;">
-        <h1>🏆</h1><h2 id="judul-selesai" style="color:var(--primary-hover); font-size: 32px; font-weight: 800; font-family:'Cinzel', serif; margin-bottom: 15px; text-shadow: 0 0 15px var(--primary);">VICTORY!</h2>
+        <h1>🏆</h1><h2 id="judul-selesai" style="color:var(--primary-dark); font-size: 32px; font-weight: 800; font-family:'Cinzel', serif; margin-bottom: 15px;">VICTORY!</h2>
         <p id="teks-selesai" style="color:var(--text-muted); font-size: 16px; line-height: 1.6; margin-bottom: 35px; font-weight:500;">Misi Selesai! Data base kamu sudah diamankan di server SMANJO. Selamat beristirahat, Warrior!</p>
         <button class="btn-outline" onclick="location.reload()" style="max-width: 250px; margin: 0 auto;">RETURN TO BASE</button>
       </div>
@@ -651,9 +624,9 @@
       // === TAMBAHAN LOGIKA UNTUK MENAMPILKAN SOAL ESAI ===
       else if (jns === "ESAI" || jns === "ESSAY") {
         pilArea.innerHTML = `
-          <div style="background: rgba(217, 168, 74, 0.05); border: 1px dashed var(--primary); padding: 25px; border-radius: 4px; text-align: center; margin-bottom: 15px;">
-            <span style="font-size: 24px; display: block; margin-bottom: 10px; filter: drop-shadow(0 0 5px var(--primary));">📝</span>
-            <strong style="color: var(--primary-hover); font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Soal Uraian / Esai</strong>
+          <div style="background: #fffbeb; border: 1px dashed var(--primary); padding: 25px; border-radius: 6px; text-align: center; margin-bottom: 15px;">
+            <span style="font-size: 24px; display: block; margin-bottom: 10px;">📝</span>
+            <strong style="color: var(--primary-dark); font-size: 16px; letter-spacing: 1px; text-transform: uppercase;">Soal Uraian / Esai</strong>
             <p style="color: var(--text-main); font-size: 14px; margin: 10px 0 0 0; font-weight: 500;">
               Silakan kerjakan soal ini pada lembar jawaban kertas yang telah disediakan.
             </p>
@@ -683,7 +656,7 @@
             
             let htmlOpsi = `<label class="option-label ${isCheck ? 'selected' : ''}" onclick="simpanPGKBS(${indeks}, ${id}, '${h}', '${jns}', this)">
                 <input type="${inputType}" name="opsi_${id}" value="${h}" ${isCheck ? 'checked' : ''} onclick="event.stopPropagation(); simpanPGKBS(${indeks}, ${id}, '${h}', '${jns}', this)">
-                <b style="color:var(--primary-hover);">${h}.</b> <span style="margin-left:8px;">${s.pilihan[h]}</span></label>`;
+                <b style="color:var(--primary-dark);">${h}.</b> <span style="margin-left:8px;">${s.pilihan[h]}</span></label>`;
             pilArea.innerHTML += htmlOpsi;
           }
         });
@@ -781,7 +754,6 @@
           if(paksa) { 
               document.getElementById('judul-selesai').innerText = "DEFEAT! (BANNED)"; 
               document.getElementById('judul-selesai').style.color = "var(--danger)"; 
-              document.getElementById('judul-selesai').style.textShadow = "0 0 15px rgba(224,40,40,0.8)";
               document.getElementById('teks-selesai').innerText = "Sistem mendeteksi 4x pelanggaran kecurangan. Match Ujian dihentikan paksa."; 
           }
       })
