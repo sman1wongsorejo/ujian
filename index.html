@@ -6,34 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <title>Portal CBT - SMAN 1 Wongsorejo</title>
   
-  <!-- Font Modern Edukasi: Poppins untuk Heading, Inter untuk Teks Soal -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <!-- Font Modern Edukasi: Dimuat secara Asinkron agar halaman tidak render-blocking -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+  <noscript>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">
+  </noscript>
   
   <style>
     :root { 
-      /* TEMA PREMIUM EDTECH (Indigo & Slate) */
-      --primary: #4f46e5; /* Indigo Modern */
+      --primary: #4f46e5;
       --primary-hover: #4338ca; 
       --primary-light: #e0e7ff; 
-      
-      --accent: #3b82f6; /* Azure Blue */
-      --accent-hover: #2563eb;
-      
-      --bg-base: #f1f5f9; /* Slate 100 - Latar luar yang lembut */
-      --card-bg: #ffffff; /* Panel putih bersih */
-      --card-border: #e2e8f0; /* Slate 200 */
-      
-      --text-main: #0f172a; /* Slate 900 - Hitam tegas namun tidak pekat */
-      --text-muted: #64748b; /* Slate 500 - Abu elegan */
-      
+      --accent: #3b82f6; 
+      --bg-base: #f1f5f9; 
+      --card-bg: #ffffff; 
+      --card-border: #e2e8f0; 
+      --text-main: #0f172a; 
+      --text-muted: #64748b; 
       --success: #10b981; 
       --danger: #ef4444; 
       --warning: #f59e0b; 
-      
-      /* Shadow Premium ala desain MacOS/SaaS */
       --shadow-sm: 0 2px 4px rgba(0,0,0,0.02);
-      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.01);
-      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.02);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
     }
     
     body, html { 
@@ -41,16 +38,15 @@
       background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
       color: var(--text-main); 
       margin: 0; padding: 0; width: 100%; height: 100%; overflow-x: hidden;
-      -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+      -webkit-user-select: none; user-select: none;
     }
     
     input[type="text"], input[type="password"] {
-      -webkit-user-select: text; -moz-user-select: text; -ms-user-select: text; user-select: text;
+      -webkit-user-select: text; user-select: text;
     }
 
-    /* Animasi Halus */
     @keyframes fadeSlideUp {
-      0% { opacity: 0; transform: translateY(20px); }
+      0% { opacity: 0; transform: translateY(10px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     @keyframes spinEdu {
@@ -58,259 +54,178 @@
       100% { transform: rotate(360deg); }
     }
 
-    .iframe-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; box-sizing: border-box; position: relative; z-index: 1;}
+    .iframe-container { display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 15px; box-sizing: border-box; position: relative; z-index: 1;}
     .container { width: 100%; max-width: 800px; }
     
     .card { 
       background: var(--card-bg); 
       border: 1px solid rgba(255, 255, 255, 0.5);
       border-radius: 20px; 
-      padding: 40px; 
-      animation: fadeSlideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      padding: 35px; 
+      animation: fadeSlideUp 0.3s ease-out forwards;
       box-shadow: var(--shadow-lg);
       position: relative;
       overflow: hidden;
     }
     
-    /* Aksen garis atas card (Gradient Mewah) */
     .card::before {
-      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 6px; 
+      content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; 
       background: linear-gradient(90deg, var(--primary), var(--accent), #06b6d4);
     }
     
-    .header-title { text-align: center; margin-bottom: 35px; }
-    .header-logo { width: 100%; max-width: 260px; height: auto; margin-bottom: 20px; filter: drop-shadow(0px 4px 6px rgba(0,0,0,0.05));}
+    .header-title { text-align: center; margin-bottom: 30px; }
+    .header-logo { width: 100%; max-width: 240px; height: auto; margin-bottom: 15px; }
     
     .header-title h2 { 
       margin: 0; color: var(--text-main); 
-      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 26px; 
-      letter-spacing: 0.5px;
+      font-family: 'Poppins', sans-serif; font-weight: 800; font-size: 24px; 
     }
-    .header-title p { margin: 6px 0 0; color: var(--primary); font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
+    .header-title p { margin: 5px 0 0; color: var(--primary); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;}
     
-    .form-group { margin-bottom: 22px; text-align: left; }
-    .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 13px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;}
+    .form-group { margin-bottom: 20px; text-align: left; }
+    .form-group label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 12.5px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;}
     
-    /* PERBAIKAN MUTLAK POSISI TOGGLE MATA DI KANAN */
-    .input-wrapper { 
-      position: relative; 
-      width: 100%; 
-      display: block;
-    }
+    .input-wrapper { position: relative; width: 100%; display: block; }
     
     input[type="text"], input[type="password"], select { 
-      width: 100%; padding: 15px 18px; 
+      width: 100%; padding: 14px 16px; 
       border: 1.5px solid var(--card-border); border-radius: 12px; 
       box-sizing: border-box; font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;
-      transition: all 0.3s ease; 
-      background: #f8fafc; 
-      color: var(--text-main);
+      background: #f8fafc; color: var(--text-main);
+      transition: border-color 0.2s ease, background 0.2s ease;
     }
     
-    input[type="password"] { 
-      padding-right: 50px !important; /* Ruang agar teks tidak menabrak ikon */
-    }
-    
+    input[type="password"] { padding-right: 48px !important; }
     input::placeholder { color: #94a3b8; font-weight: 400;}
     
     select { 
       cursor: pointer; appearance: none; 
       background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e"); 
-      background-repeat: no-repeat; background-position: right 1.2rem center; background-size: 1.2em; 
+      background-repeat: no-repeat; background-position: right 1rem center; background-size: 1.2em; 
     }
 
     input[type="text"]:focus, input[type="password"]:focus, select:focus { 
-      border-color: var(--primary); outline: none; 
-      background: #ffffff; 
-      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15); 
+      border-color: var(--primary); outline: none; background: #ffffff; 
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12); 
     }
     
-    /* KUNCI POSISI IKON DI TEPI KANAN LUAR DALAM */
     .toggle-pw-btn { 
-      position: absolute !important; 
-      right: 12px !important; 
-      top: 50% !important; 
-      transform: translateY(-50%) !important; 
-      background: transparent !important; 
-      border: none !important; 
-      padding: 6px !important; 
-      display: flex !important; 
-      align-items: center !important; 
-      justify-content: center !important;
-      color: var(--text-muted) !important; 
-      cursor: pointer !important; 
-      border-radius: 50% !important; 
-      transition: color 0.2s ease !important;
-      z-index: 10 !important;
-      width: auto !important;
-      height: auto !important;
-      margin: 0 !important;
-      box-shadow: none !important;
+      position: absolute !important; right: 10px !important; top: 50% !important; 
+      transform: translateY(-50%) !important; background: transparent !important; 
+      border: none !important; padding: 6px !important; display: flex !important; 
+      align-items: center !important; justify-content: center !important;
+      color: var(--text-muted) !important; cursor: pointer !important; 
+      z-index: 10 !important; width: auto !important; height: auto !important; margin: 0 !important;
     }
     .toggle-pw-btn:hover { color: var(--primary) !important; }
     .toggle-pw-btn svg { width: 20px; height: 20px; display: block; }
     
-    /* Tombol Interaktif Premium */
     button { 
       background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-      color: #ffffff; 
-      border: none; 
-      padding: 16px 24px; 
-      border-radius: 12px; cursor: pointer; 
+      color: #ffffff; border: none; padding: 15px 20px; border-radius: 12px; cursor: pointer; 
       font-family: 'Poppins', sans-serif; font-weight: 600; font-size: 15px; letter-spacing: 0.5px;
-      width: 100%; margin-top: 15px; 
-      transition: all 0.3s ease; 
-      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+      width: 100%; margin-top: 10px; transition: transform 0.15s ease, box-shadow 0.15s ease;
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.2);
     }
-    button:hover:not(:disabled) { 
-      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.4);
-      transform: translateY(-2px);
-    }
-    button:active:not(:disabled) { transform: translateY(0); box-shadow: 0 2px 8px rgba(79, 70, 229, 0.2); }
-    button:disabled { background: #cbd5e1 !important; color: #64748b !important; cursor: not-allowed !important; box-shadow: none !important; transform: none !important;}
+    button:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(79, 70, 229, 0.3); }
+    button:active:not(:disabled) { transform: translateY(0); }
+    button:disabled { background: #cbd5e1 !important; color: #64748b !important; cursor: not-allowed !important; box-shadow: none !important; }
     
-    button.btn-success { background: linear-gradient(135deg, var(--success) 0%, #059669 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25); }
-    button.btn-success:hover:not(:disabled) { box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4); }
-    
-    button.btn-outline { 
-      background: #ffffff; color: var(--text-main); 
-      border: 1.5px solid var(--card-border); box-shadow: var(--shadow-sm);
-    }
-    button.btn-outline:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; box-shadow: var(--shadow-md); }
+    button.btn-success { background: linear-gradient(135deg, var(--success) 0%, #059669 100%); box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2); }
+    button.btn-outline { background: #ffffff; color: var(--text-main); border: 1.5px solid var(--card-border); box-shadow: var(--shadow-sm); }
+    button.btn-outline:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
 
     #dashboard-section, #exam-section, #result-section { display: none; }
     
-    /* Box Profil Dashboard */
-    .dash-box { 
-      background: #f8fafc; padding: 25px; border-radius: 16px; 
-      margin-bottom: 25px; border: 1px solid var(--card-border);
-    }
-    .dash-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14.5px; }
-    .dash-table th, .dash-table td { padding: 14px 10px; border-bottom: 1px dashed var(--card-border); }
+    .dash-box { background: #f8fafc; padding: 20px; border-radius: 14px; margin-bottom: 20px; border: 1px solid var(--card-border); }
+    .dash-table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
+    .dash-table th, .dash-table td { padding: 12px 8px; border-bottom: 1px dashed var(--card-border); }
     .dash-table th { width: 35%; color: var(--text-muted); font-weight: 500;}
     .dash-table td { font-weight: 600; color: var(--text-main); }
     .dash-table tr:last-child th, .dash-table tr:last-child td { border-bottom: none; padding-bottom: 0;}
     .dash-table tr:first-child th, .dash-table tr:first-child td { padding-top: 0;}
     
-    /* Box Peringatan Banned */
     .alert-warning { 
       background: #fef2f2; border: 1px solid #fecaca; border-left: 4px solid var(--danger); 
-      padding: 20px; margin-bottom: 25px; border-radius: 12px; 
-      font-size: 14px; color: #991b1b; line-height: 1.6;
+      padding: 16px; margin-bottom: 20px; border-radius: 10px; font-size: 13.5px; color: #991b1b; line-height: 1.5;
     }
-    .alert-warning strong { color: var(--danger); display: flex; align-items: center; gap: 8px; margin-bottom: 10px; font-size: 15px; font-family: 'Poppins', sans-serif;}
+    .alert-warning strong { color: var(--danger); display: flex; align-items: center; gap: 6px; margin-bottom: 8px; font-size: 14.5px; font-family: 'Poppins', sans-serif;}
     
-    /* Header Ujian */
     .exam-header { 
       display: flex; justify-content: space-between; align-items: center; 
-      padding: 0 0 18px 0; margin-bottom: 25px; flex-wrap: wrap; gap: 12px;
+      padding-bottom: 15px; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;
       border-bottom: 1px solid var(--card-border);
     }
-    .badge-qno { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 22px; color: var(--text-main); }
+    .badge-qno { font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 20px; color: var(--text-main); }
     
     .badge-timer { 
-      color: var(--danger); font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 18px; 
-      display: flex; align-items: center; gap: 6px; 
-      background: #fef2f2; padding: 8px 18px; border-radius: 30px; border: 1px solid #fecaca;
-      box-shadow: 0 2px 8px rgba(239, 68, 68, 0.1);
+      color: var(--danger); font-family: 'Poppins', sans-serif; font-weight: 700; font-size: 17px; 
+      display: flex; align-items: center; gap: 5px; 
+      background: #fef2f2; padding: 6px 14px; border-radius: 20px; border: 1px solid #fecaca;
     }
     
     .badge-jenis { 
       background: var(--primary-light); color: var(--primary-hover); border: 1px solid #c7d2fe;
-      padding: 6px 14px; border-radius: 8px; font-size: 12.5px; font-weight: 600; 
-      margin-bottom: 20px; display: inline-block; letter-spacing: 0.5px;
+      padding: 5px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; 
+      margin-bottom: 15px; display: inline-block; letter-spacing: 0.5px;
     }
     
-    .student-info { width: 100%; text-align: left; font-size: 13.5px; color: var(--text-muted); padding-top: 5px; font-weight: 500;}
+    .student-info { width: 100%; text-align: left; font-size: 13px; color: var(--text-muted); font-weight: 500;}
+    .question-text { font-size: 15.5px; font-weight: 500; line-height: 1.7; margin-bottom: 25px; color: var(--text-main); }
     
-    .question-text { font-size: 16px; font-weight: 500; line-height: 1.8; margin-bottom: 30px; color: var(--text-main); }
-    
-    /* Pilihan Jawaban (Interactive Card Style) */
     .option-label { 
-      display: flex; align-items: center; 
-      background: var(--card-bg); border: 1.5px solid var(--card-border);
-      padding: 16px 20px; margin-bottom: 14px; border-radius: 14px; 
-      cursor: pointer; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); 
-      font-size: 15.5px; color: var(--text-main); line-height: 1.5;
+      display: flex; align-items: center; background: var(--card-bg); border: 1.5px solid var(--card-border);
+      padding: 14px 18px; margin-bottom: 12px; border-radius: 12px; cursor: pointer; 
+      transition: background 0.15s ease, border-color 0.15s ease; font-size: 15px; color: var(--text-main); line-height: 1.4;
     }
-    .option-label:hover { background: #f8fafc; border-color: #cbd5e1; transform: translateY(-2px); box-shadow: var(--shadow-sm); }
+    .option-label:hover { background: #f8fafc; border-color: #cbd5e1; }
     .option-label input[type="radio"], .option-label input[type="checkbox"] { 
-      margin-right: 18px; width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); flex-shrink: 0;
+      margin-right: 15px; width: 20px; height: 20px; cursor: pointer; accent-color: var(--primary); flex-shrink: 0;
     }
     .option-label.selected { 
       border-color: var(--primary); background: var(--primary-light); color: var(--primary-hover);
-      box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
     }
     
-    /* PENYESUAIAN DESAIN SOAL MENJODOHKAN (JDH) */
     .jdh-row { 
       display: flex; align-items: center; justify-content: space-between; 
-      background: var(--card-bg); padding: 18px; margin-bottom: 12px; 
-      border-radius: 12px; border: 1.5px solid var(--card-border); transition: 0.2s; 
+      background: var(--card-bg); padding: 15px; margin-bottom: 10px; 
+      border-radius: 10px; border: 1.5px solid var(--card-border); 
     }
-    .jdh-row:hover { background: #f8fafc; border-color: #cbd5e1; }
-    .jdh-row label { font-weight: 500; flex: 1; font-size: 15px; padding-right: 15px; }
-    .jdh-row select { 
-      flex: 0 0 120px; 
-      padding: 10px; 
-      border-radius: 10px; 
-      font-weight: 600; 
-      color: var(--text-main); 
-      border: 1.5px solid var(--card-border); 
-      background: #ffffff;
-      text-align: center;
-      text-align-last: center;
-      cursor: pointer;
-    }
-    .jdh-row select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15); outline: none;}
+    .jdh-row label { font-weight: 500; flex: 1; font-size: 14.5px; padding-right: 10px; }
+    .jdh-row select { flex: 0 0 110px; padding: 8px; border-radius: 8px; font-weight: 600; text-align: center; text-align-last: center; }
 
-    .nav-buttons { display: flex; gap: 15px; margin-top: 35px; }
+    .nav-buttons { display: flex; gap: 12px; margin-top: 30px; }
     
-    /* Navigasi Soal (Minimap) */
-    .nav-grid-container { margin-top: 45px; padding-top: 30px; border-top: 1px dashed var(--card-border); }
-    .nav-grid-container h4 { margin-top: 0; font-family: 'Poppins', sans-serif; font-size: 15px; color: var(--text-muted); margin-bottom: 15px;}
-    .nav-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+    .nav-grid-container { margin-top: 35px; padding-top: 25px; border-top: 1px dashed var(--card-border); }
+    .nav-grid-container h4 { margin: 0 0 12px 0; font-family: 'Poppins', sans-serif; font-size: 14px; color: var(--text-muted); }
+    .nav-grid { display: flex; flex-wrap: wrap; gap: 8px; }
     
     .nav-box { 
-      width: 42px; height: 42px; display: flex; align-items: center; justify-content: center; 
-      border: 1.5px solid var(--card-border); border-radius: 10px; font-size: 14.5px; font-weight: 600; 
+      width: 38px; height: 38px; display: flex; align-items: center; justify-content: center; 
+      border: 1.5px solid var(--card-border); border-radius: 8px; font-size: 14px; font-weight: 600; 
       color: var(--text-muted); cursor: pointer; background-color: var(--card-bg); 
-      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: background-color 0.15s ease, border-color 0.15s ease;
     }
-    .nav-box:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-2px); }
+    .nav-box:hover { border-color: var(--primary); color: var(--primary); }
     .nav-box.answered { background: var(--primary-light); border-color: var(--primary-light); color: var(--primary-hover); }
-    .nav-box.active { 
-      border: 2px solid var(--primary); transform: scale(1.1); font-weight: 700;
-      box-shadow: 0 4px 10px rgba(79, 70, 229, 0.2); z-index: 2; color: var(--primary); background: #ffffff;
-    }
+    .nav-box.active { border: 2px solid var(--primary); font-weight: 700; color: var(--primary); background: #ffffff; }
     .nav-box.answered.active { background: var(--primary); border-color: var(--primary); color: #ffffff; }
     
-    /* Loader Spinner Edukasi */
-    .loading-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
+    .loading-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
+    .spinner { width: 40px; height: 40px; border: 4px solid var(--card-border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spinEdu 0.8s linear infinite; }
     
-    .spinner { 
-      width: 45px; height: 45px; border: 4px solid var(--card-border);
-      border-top: 4px solid var(--primary); border-radius: 50%;
-      animation: spinEdu 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
-    }
-    
-    #result-section h1 { font-size: 65px; margin: 0 0 15px 0; }
-    
-    .watermark-container { display: flex; justify-content: center; align-items: center; gap: 6px; margin-top: 30px; pointer-events: none; }
-    .watermark-text { font-size: 12.5px; color: #94a3b8; font-weight: 500;}
+    .watermark-container { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 25px; pointer-events: none; }
+    .watermark-text { font-size: 12px; color: #94a3b8; font-weight: 500;}
     .watermark-glow { color: var(--primary); font-weight: 600; }
 
-    /* Responsif Mobile */
     @media (max-width: 600px) { 
       .iframe-container { padding: 0px; align-items: flex-start; } 
-      .card { padding: 35px 25px; border-radius: 0; min-height: 100vh; box-shadow: none; border: none;} 
-      .card::before { border-radius: 0; height: 4px; }
-      .header-title h2 { font-size: 24px; }
-      .header-logo { max-width: 220px; }
+      .card { padding: 25px 20px; border-radius: 0; min-height: 100vh; box-shadow: none; border: none;} 
+      .card::before { height: 3px; }
+      .header-title h2 { font-size: 22px; }
+      .header-logo { max-width: 190px; }
       .jdh-row { flex-direction: column; align-items: flex-start; } 
-      .jdh-row select { margin-left: 0; margin-top: 10px; width: 100%; flex: none; } 
-      .nav-box { width: 38px; height: 38px; font-size: 13.5px;}
-      .badge-timer { padding: 6px 14px; font-size: 16px; }
+      .jdh-row select { margin-top: 8px; width: 100%; flex: none; } 
     }
   </style>
 </head>
@@ -318,7 +233,7 @@
 
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
-    <p id="loadingText" style="margin-top:20px; font-weight:600; font-family:'Poppins', sans-serif; color:var(--primary-hover); font-size: 14px; letter-spacing: 1px;">Memproses data...</p>
+    <p id="loadingText" style="margin-top:15px; font-weight:600; font-family:'Poppins', sans-serif; color:var(--primary-hover); font-size: 13.5px; letter-spacing: 0.5px;">Memproses data...</p>
   </div>
 
   <div class="iframe-container">
@@ -345,7 +260,7 @@
           </div>
         </div>
         <button onclick="prosesLogin()" id="btnLogin">MASUK PORTAL</button>
-        <p id="pesan-error" style="color:var(--danger); margin-top:15px; text-align:center; display:none; font-size:13.5px; font-weight:500; background: #fef2f2; padding: 10px; border-radius: 8px; border: 1px solid #fecaca;"></p>
+        <p id="pesan-error" style="color:var(--danger); margin-top:12px; text-align:center; display:none; font-size:13px; font-weight:500; background: #fef2f2; padding: 10px; border-radius: 8px; border: 1px solid #fecaca;"></p>
       </div>
 
       <!-- DASHBOARD SECTION -->
@@ -361,16 +276,16 @@
           </table>
         </div>
         
-        <div class="alert-warning" id="box-peringatan" style="display: block; width: 100%; box-sizing: border-box;">
+        <div class="alert-warning" id="box-peringatan">
           <strong>🚨 TATA TERTIB UJIAN BERBASIS KOMPUTER</strong>
           Sistem akan <b>MENGHENTIKAN UJIAN (BLOKIR)</b> secara otomatis jika Anda melakukan 4x pelanggaran berikut:
-          <ul style="margin-top: 10px; margin-bottom: 12px; padding-left: 20px; font-weight: 500;">
+          <ul style="margin: 8px 0 10px 0; padding-left: 18px; font-weight: 500;">
             <li>Berpindah aplikasi atau mengecilkan browser (Minimize).</li>
             <li>Membuka notifikasi/layar split (Split Screen).</li>
-            <li>Layar HP mati/terkunci (Gunakan pengaturan sleep minimal 10 menit).</li>
+            <li>Layar HP mati/terkunci (Atur sleep minimal 10 menit).</li>
           </ul>
-          <div style="font-size: 13px; border-top: 1px dashed #fca5a5; padding-top: 12px; margin-top: 12px;">
-            <b>Catatan:</b> Jika layar menjadi putih (blank) akibat peringatan sistem, silakan lakukan <b>Muat Ulang (Refresh)</b> halaman untuk kembali.
+          <div style="font-size: 12.5px; border-top: 1px dashed #fca5a5; padding-top: 10px; margin-top: 10px;">
+            <b>Catatan:</b> Jika layar blank akibat peringatan sistem, silakan <b>Muat Ulang (Refresh)</b> halaman.
           </div>
         </div>
         
@@ -394,16 +309,16 @@
           <button class="btn-outline" onclick="soalSebelumnya()" id="btnPrev">SEBELUMNYA</button>
           <button onclick="soalSelanjutnya()" id="btnNext">SELANJUTNYA</button>
         </div>
-        <div style="margin-top:30px;" id="submit-container"><button class="btn-success" onclick="konfirmasiSelesai()" style="display:none;" id="btnSubmit">SELESAIKAN UJIAN</button></div>
+        <div style="margin-top:25px;" id="submit-container"><button class="btn-success" onclick="konfirmasiSelesai()" style="display:none;" id="btnSubmit">SELESAIKAN UJIAN</button></div>
         <div class="nav-grid-container"><h4>Daftar Soal:</h4><div class="nav-grid" id="navGridArea"></div></div>
       </div>
 
       <!-- RESULT SECTION -->
-      <div id="result-section" class="card" style="text-align:center; padding: 70px 30px;">
-        <h1>🎓</h1>
-        <h2 id="judul-selesai" style="color:var(--text-main); font-size: 28px; font-family:'Poppins', sans-serif; margin-bottom: 12px;">UJIAN SELESAI!</h2>
-        <p id="teks-selesai" style="color:var(--text-muted); font-size: 15.5px; line-height: 1.6; margin-bottom: 40px;">Tanggapan Anda telah berhasil disimpan di server pusat SMAN 1 Wongsorejo. Terima kasih telah mengerjakan ujian dengan jujur.</p>
-        <button class="btn-outline" onclick="location.reload()" style="max-width: 250px; margin: 0 auto;">KEMBALI KE BERANDA</button>
+      <div id="result-section" class="card" style="text-align:center; padding: 60px 25px;">
+        <h1 style="font-size: 55px; margin: 0 0 10px 0;">🎓</h1>
+        <h2 id="judul-selesai" style="color:var(--text-main); font-size: 26px; font-family:'Poppins', sans-serif; margin-bottom: 10px;">UJIAN SELESAI!</h2>
+        <p id="teks-selesai" style="color:var(--text-muted); font-size: 15px; line-height: 1.5; margin-bottom: 35px;">Tanggapan Anda telah berhasil disimpan di server pusat SMAN 1 Wongsorejo. Terima kasih telah mengerjakan ujian dengan jujur.</p>
+        <button class="btn-outline" onclick="location.reload()" style="max-width: 220px; margin: 0 auto;">KEMBALI KE BERANDA</button>
       </div>
 
       <div class="watermark-container">
@@ -421,16 +336,15 @@
     const URL_API_GAS = "https://script.google.com/macros/s/AKfycbyGi8A3MIDN-aOLnPfBbupq-Xv74shn4W5_i5NnWPlr6ww5rJbUFefngSuXe7tHxROy/exec";
 
     document.addEventListener('keydown', function(e) {
-      if (e.ctrlKey && (e.key === 'c' || e.key === 'v' || e.key === 'x' || e.key === 'a' || e.key === 'u' || e.key === 'p')) { e.preventDefault(); }
+      if (e.ctrlKey && ['c', 'v', 'x', 'a', 'u', 'p'].includes(e.key.toLowerCase())) { e.preventDefault(); }
       if (e.key === 'F12') { e.preventDefault(); }
     });
 
     function togglePassword() { 
       const p = document.getElementById("password"); 
       const container = document.getElementById("btn-eye");
-      
-      const svgEyeOpen = `<svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
-      const svgEyeClosed = `<svg id="eye-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
+      const svgEyeOpen = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`;
+      const svgEyeClosed = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`;
       
       if(p.type === "password"){
         p.type = "text"; 
@@ -441,8 +355,9 @@
       } 
     }
 
+    // Menggunakan fetch ringan dengan timeout/cache check sederhana
     document.addEventListener('DOMContentLoaded', function() {
-      tampilkanLoading(true, "MENGHUBUNGKAN KE SERVER...");
+      tampilkanLoading(true, "MEMBUAT KONEKSI KE SERVER...");
       
       fetch(URL_API_GAS, {
         method: "POST",
@@ -471,17 +386,22 @@
     let durasi = 90; 
     let interval; 
     let sessionKey = "";
-    
     let isSubmitting = false; 
     let isPenalizing = false;
 
     function prosesLogin() {
-      const nisn = document.getElementById('nisn').value; 
-      const pw = document.getElementById('password').value; 
+      const nisn = document.getElementById('nisn').value.trim(); 
+      const pw = document.getElementById('password').value.trim(); 
       kodeUjian = document.getElementById('kodeUjian').value;
       
-      if(!kodeUjian || !nisn || !pw) return;
+      if(!kodeUjian || !nisn || !pw) {
+        document.getElementById('pesan-error').innerText = "Semua kolom wajib diisi!";
+        document.getElementById('pesan-error').style.display = "block";
+        return;
+      }
+      
       tampilkanLoading(true, "MEMVERIFIKASI DATA...");
+      document.getElementById('pesan-error').style.display = "none";
       
       fetch(URL_API_GAS, {
         method: "POST",
@@ -499,7 +419,10 @@
         
         identitas = res.siswa; dataSoal = res.soal; durasi = res.durasi; sessionKey = `CBT_SMANJO_${identitas.nisn}_${kodeUjian}`;
         
-        document.getElementById('dash-nama').innerText = identitas.nama; document.getElementById('dash-nisn').innerText = identitas.nisn; document.getElementById('dash-kelas').innerText = identitas.kelas; document.getElementById('dash-ujian').innerText = kodeUjian;
+        document.getElementById('dash-nama').innerText = identitas.nama; 
+        document.getElementById('dash-nisn').innerText = identitas.nisn; 
+        document.getElementById('dash-kelas').innerText = identitas.kelas; 
+        document.getElementById('dash-ujian').innerText = kodeUjian;
         
         let saved = localStorage.getItem(sessionKey); 
         let btn = document.getElementById('btnMulaiExam'); 
@@ -512,7 +435,6 @@
               localStorage.removeItem(sessionKey);
               document.getElementById('dash-status').innerHTML = "<span style='color:var(--success); font-weight:600;'>Siap (Sesi Direset) ✅</span>";
               status = "baru";
-              teksTombolAktif = "SAYA MENGERTI & MULAI UJIAN";
           }
           else if(d.endTime > Date.now()) { 
               document.getElementById('dash-status').innerHTML = `<span style='color:var(--warning); font-weight:600;'>Melanjutkan Sesi (${pel}/4) ⏳</span>`; 
@@ -527,7 +449,7 @@
         
         if (status !== "habis") {
             btn.disabled = true;
-            let waktuTunggu = 10;
+            let waktuTunggu = 5; // Dipercepat menjadi 5 detik agar lebih ramah pengguna
             btn.innerText = `Harap baca aturan (${waktuTunggu}s)`;
             let hitungMundur = setInterval(function() {
               waktuTunggu--;
@@ -541,7 +463,8 @@
             }, 1000);
         }
         
-        document.getElementById('login-section').style.display = 'none'; document.getElementById('dashboard-section').style.display = 'block';
+        document.getElementById('login-section').style.display = 'none'; 
+        document.getElementById('dashboard-section').style.display = 'block';
       })
       .catch(err => {
           tampilkanLoading(false);
@@ -555,17 +478,28 @@
         let d = JSON.parse(saved); jawabanSiswa = d.jawaban || {}; dataSoal = d.soal;
         if(d.pelanggaran >= 4) { kirimData(true); return; } endT = d.endTime;
       } else {
-        endT = Date.now() + (durasi * 60000); localStorage.setItem(sessionKey, JSON.stringify({endTime: endT, jawaban: {}, soal: dataSoal, pelanggaran: 0}));
+        endT = Date.now() + (durasi * 60000); 
+        localStorage.setItem(sessionKey, JSON.stringify({endTime: endT, jawaban: {}, soal: dataSoal, pelanggaran: 0}));
       }
-      document.getElementById('dashboard-section').style.display = 'none'; document.getElementById('exam-section').style.display = 'block'; document.getElementById('namaPeserta').innerText = identitas.nama;
+      document.getElementById('dashboard-section').style.display = 'none'; 
+      document.getElementById('exam-section').style.display = 'block'; 
+      document.getElementById('namaPeserta').innerText = identitas.nama;
       buatNav(); tampilkanSoal(0); mulaiTimer(endT);
     }
 
     function buatNav() {
-      const area = document.getElementById('navGridArea'); area.innerHTML = '';
+      const area = document.getElementById('navGridArea'); 
+      let frag = document.createDocumentFragment();
       dataSoal.forEach((_, i) => {
-        let box = document.createElement('div'); box.className = 'nav-box'; box.id = 'nav-'+i; box.innerText = i+1; box.onclick = () => tampilkanSoal(i); area.appendChild(box);
+        let box = document.createElement('div'); 
+        box.className = 'nav-box'; 
+        box.id = 'nav-'+i; 
+        box.innerText = i+1; 
+        box.onclick = () => tampilkanSoal(i); 
+        frag.appendChild(box);
       });
+      area.innerHTML = '';
+      area.appendChild(frag);
     }
 
     function updateNav() {
@@ -584,13 +518,11 @@
       indeksSaatIni = indeks; const s = dataSoal[indeks]; const id = s.idAsli; const jns = s.jenis;
       document.getElementById('nomorSoal').innerText = `Soal ${indeks + 1} / ${dataSoal.length}`;
       
-      // === PENAMBAHAN FITUR GAMBAR SOAL ===
       let elemenGambar = '';
       if (s.gambar && s.gambar.toString().trim() !== "") {
-        elemenGambar = `<img src="${s.gambar.trim()}" alt="Gambar Soal" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 15px; display: block; box-shadow: var(--shadow-sm); border: 1px solid var(--card-border);">`;
+        elemenGambar = `<img src="${s.gambar.trim()}" alt="Gambar Soal" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 12px; display: block; border: 1px solid var(--card-border);">`;
       }
       document.getElementById('teksPertanyaan').innerHTML = elemenGambar + s.pertanyaan.replace(/\n/g, '<br>');
-      // ====================================
 
       const lbl = document.getElementById('labelJenisSoal');
       if(jns === "PGK") { lbl.innerText = "Pilihan Ganda Kompleks (Pilih > 1 jawaban)"; }
@@ -599,28 +531,21 @@
       else if(jns === "ESAI" || jns === "ESSAY") { lbl.innerText = "Uraian / Esai"; }
       else { lbl.innerText = "Pilihan Ganda"; }
 
-      const pilArea = document.getElementById('pilihanJawaban'); pilArea.innerHTML = '';
+      const pilArea = document.getElementById('pilihanJawaban'); 
+      pilArea.innerHTML = '';
       const opsi = ['A', 'B', 'C', 'D', 'E'];
 
-      // --- SOAL MENJODOHKAN (DROPDOWN DINAMIS) ---
       if (jns === "JDH") {
         let valArr = jawabanSiswa[id] ? jawabanSiswa[id].split(',') : [];
-        
-        let htmlJdh = `
-          <div style="background: var(--primary-light); border-left: 4px solid var(--primary); padding: 15px 20px; border-radius: 8px; margin-bottom: 25px;">
-            <h4 style="margin: 0 0 8px 0; color: var(--primary-hover); font-size: 14.5px;">💡 Petunjuk Mengerjakan:</h4>
-            <p style="margin: 0; font-size: 13.5px; color: var(--text-main); line-height: 1.6;">
-              Baca daftar pilihan jawaban yang ada pada <b>Teks Soal di atas</b>. Kemudian, klik tombol pilihan di sebelah kanan untuk menentukan pasangan yang tepat.
-            </p>
-          </div>`;
+        let htmlJdh = `<div style="background: var(--primary-light); border-left: 4px solid var(--primary); padding: 12px 15px; border-radius: 8px; margin-bottom: 20px;">
+          <h4 style="margin: 0 0 5px 0; color: var(--primary-hover); font-size: 14px;">💡 Petunjuk Mengerjakan:</h4>
+          <p style="margin: 0; font-size: 13px; color: var(--text-main); line-height: 1.5;">Baca daftar pilihan jawaban pada Teks Soal di atas, lalu pilih pasangan yang tepat pada menu di bawah.</p>
+        </div>`;
 
         for(let j=1; j<=5; j++){
            let hurufBaris = opsi[j-1];
-           
            if(s.pilihan[hurufBaris]) {
                let selVal = valArr[j-1] || "";
-               
-               // Generate Opsi Dropdown Secara Dinamis
                let dropdownOptions = '<option value="">- Pilih -</option>';
                opsi.forEach(opt => {
                  if (s.pilihan[opt]) {
@@ -629,39 +554,29 @@
                  }
                });
                
-               htmlJdh += `<div class="jdh-row" style="align-items: center;">
-                 <label style="flex: 1; padding-right: 15px;">${j}. ${s.pilihan[hurufBaris]}</label>
-                 <select onchange="simpanJDH(${indeks}, ${id}, ${j-1}, this.value)" style="flex: 0 0 120px; text-align: center; text-align-last: center; cursor: pointer; padding: 10px; font-weight: 600;">
-                   ${dropdownOptions}
-                 </select>
+               htmlJdh += `<div class="jdh-row">
+                 <label>${j}. ${s.pilihan[hurufBaris]}</label>
+                 <select onchange="simpanJDH(${indeks}, ${id}, ${j-1}, this.value)">${dropdownOptions}</select>
                </div>`;
            }
         }
         pilArea.innerHTML = htmlJdh;
       } 
-      // --- BERAKHIR SOAL MENJODOHKAN ---
-      
       else if (jns === "ESAI" || jns === "ESSAY") {
-        pilArea.innerHTML = `
-          <div style="background: #f8fafc; border: 1.5px dashed var(--card-border); padding: 30px; border-radius: 14px; text-align: center; margin-bottom: 20px;">
-            <span style="font-size: 28px; display: block; margin-bottom: 12px;">📝</span>
-            <strong style="color: var(--primary); font-size: 16px; letter-spacing: 0.5px;">Soal Uraian / Esai</strong>
-            <p style="color: var(--text-main); font-size: 14.5px; margin: 10px 0 0 0; font-weight: 500;">
-              Silakan kerjakan soal ini pada lembar jawaban kertas yang telah disediakan.
-            </p>
-          </div>
-        `;
+        pilArea.innerHTML = `<div style="background: #f8fafc; border: 1.5px dashed var(--card-border); padding: 25px; border-radius: 12px; text-align: center; margin-bottom: 15px;">
+          <span style="font-size: 26px; display: block; margin-bottom: 8px;">📝</span>
+          <strong style="color: var(--primary); font-size: 15px;">Soal Uraian / Esai</strong>
+          <p style="color: var(--text-main); font-size: 14px; margin: 8px 0 0 0; font-weight: 500;">Silakan kerjakan soal ini pada lembar jawaban kertas yang telah disediakan.</p>
+        </div>`;
         
         if (!jawabanSiswa[id]) {
           jawabanSiswa[id] = "Dikerjakan di kertas";
           let sv = JSON.parse(localStorage.getItem(sessionKey)); 
-          if (sv) {
-            sv.jawaban = jawabanSiswa; 
-            localStorage.setItem(sessionKey, JSON.stringify(sv));
-          }
+          if (sv) { sv.jawaban = jawabanSiswa; localStorage.setItem(sessionKey, JSON.stringify(sv)); }
         }
       }
       else {
+        let htmlOpsiAll = "";
         opsi.forEach(h => {
           if(s.pilihan[h]) {
             let isCheck = false; let inputType = "radio";
@@ -671,17 +586,22 @@
                 isCheck = arrAns.includes(h);
             } else { isCheck = (jawabanSiswa[id] === h); }
             
-            let htmlOpsi = `<label class="option-label ${isCheck ? 'selected' : ''}" onclick="simpanPGKBS(${indeks}, ${id}, '${h}', '${jns}', this)">
+            htmlOpsiAll += `<label class="option-label ${isCheck ? 'selected' : ''}" onclick="simpanPGKBS(${indeks}, ${id}, '${h}', '${jns}', this)">
                 <input type="${inputType}" name="opsi_${id}" value="${h}" ${isCheck ? 'checked' : ''} onclick="event.stopPropagation(); simpanPGKBS(${indeks}, ${id}, '${h}', '${jns}', this)">
                 <b style="color:var(--text-main); font-family:'Poppins', sans-serif;">${h}.</b> <span style="margin-left:8px;">${s.pilihan[h]}</span></label>`;
-            pilArea.innerHTML += htmlOpsi;
           }
         });
+        pilArea.innerHTML = htmlOpsiAll;
       }
 
       document.getElementById('btnPrev').style.visibility = indeks === 0 ? 'hidden' : 'visible';
-      if(indeks === dataSoal.length - 1) { document.getElementById('btnNext').style.display = 'none'; document.getElementById('btnSubmit').style.display = 'block'; } 
-      else { document.getElementById('btnNext').style.display = 'block'; document.getElementById('btnSubmit').style.display = 'none'; }
+      if(indeks === dataSoal.length - 1) { 
+        document.getElementById('btnNext').style.display = 'none'; 
+        document.getElementById('btnSubmit').style.display = 'block'; 
+      } else { 
+        document.getElementById('btnNext').style.display = 'block'; 
+        document.getElementById('btnSubmit').style.display = 'none'; 
+      }
       updateNav();
     }
 
@@ -731,17 +651,14 @@
     function konfirmasiSelesai() {
       if (isSubmitting) return; 
       
-      // === FITUR BARU: CEK SISA WAKTU MINIMAL ===
       let sv = JSON.parse(localStorage.getItem(sessionKey));
       if (sv && sv.endTime) {
         let sisaMenit = Math.floor((sv.endTime - Date.now()) / 60000);
-        // Jika sisa waktu masih 10 menit atau lebih
         if (sisaMenit >= 10) {
           alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu di bawah 10 menit. Silakan teliti kembali jawaban Anda).`);
-          return; // Hentikan proses, jangan munculkan konfirmasi
+          return; 
         }
       }
-      // ==========================================
 
       let trjwb = Object.values(jawabanSiswa).filter(v => v !== "" && v !== ",,,,").length;
       let blm = dataSoal.length - trjwb;
@@ -752,15 +669,11 @@
 
     function kirimData(paksa = false) {
       if (isSubmitting) return; 
-      
       isSubmitting = true; 
       clearInterval(interval); 
       
       const btnSubmit = document.getElementById('btnSubmit');
-      if(btnSubmit) {
-          btnSubmit.disabled = true; 
-          btnSubmit.innerText = "MENGIRIM..."; 
-      }
+      if(btnSubmit) { btnSubmit.disabled = true; btnSubmit.innerText = "MENGIRIM..."; }
 
       tampilkanLoading(true, "MENYIMPAN JAWABAN...");
       
@@ -777,7 +690,6 @@
       .then(res => res.json())
       .then(res => {
           tampilkanLoading(false); localStorage.removeItem(sessionKey);
-          
           document.getElementById('exam-section').style.display = 'none'; 
           document.getElementById('dashboard-section').style.display = 'none'; 
           document.getElementById('result-section').style.display = 'block';
@@ -790,10 +702,7 @@
       .catch(err => {
           tampilkanLoading(false); 
           isSubmitting = false; 
-          if(btnSubmit) {
-              btnSubmit.disabled = false;
-              btnSubmit.innerText = "SELESAIKAN UJIAN"; 
-          }
+          if(btnSubmit) { btnSubmit.disabled = false; btnSubmit.innerText = "SELESAIKAN UJIAN"; }
           alert("Gagal mengirim jawaban. Pastikan koneksi internet stabil, lalu klik tombol Selesai lagi.");
       });
     }
@@ -803,13 +712,11 @@
       document.getElementById('loading').style.display = s ? 'flex' : 'none'; 
     }
 
-    // === SISTEM KEAMANAN GANDA ===
     function catatPelanggaran(alasan) {
       if (isSubmitting || isPenalizing) return; 
 
       if (document.getElementById('exam-section').style.display === 'block') {
         isPenalizing = true; 
-        
         let sv = JSON.parse(localStorage.getItem(sessionKey)); 
         if(sv) {
            sv.pelanggaran = (sv.pelanggaran || 0) + 1; 
@@ -819,7 +726,7 @@
                alert("🚨 PELANGGARAN FATAL (4/4) 🚨\nSistem mendeteksi aktivitas mencurigakan secara berulang. Ujian diblokir!"); 
                kirimData(true); 
            } else { 
-               alert(`🚨 PERINGATAN KECURANGAN ${sv.pelanggaran} / 4 🚨\nTerdeteksi: ${alasan}.\nDilarang membuka aplikasi lain, membelah layar, atau mengecilkan browser!\n\nHarap kembali fokus ke ujian.`); 
+               alert(`🚨 PERINGATAN KECURANGAN ${sv.pelanggaran} / 4 🚨\nTerdeteksi: ${alasan}.\nDilarang membuka aplikasi lain atau mengecilkan browser!\n\nHarap kembali fokus ke ujian.`); 
                location.reload(); 
            }
         }
@@ -827,16 +734,12 @@
     }
 
     document.addEventListener("visibilitychange", function() {
-      if (document.visibilityState === 'hidden') {
-        catatPelanggaran("Berpindah halaman (Browser Diminimalkan/AFK)");
-      }
+      if (document.visibilityState === 'hidden') { catatPelanggaran("Berpindah halaman (Browser Diminimalkan/AFK)"); }
     });
 
     window.addEventListener('blur', function() {
       catatPelanggaran("Membuka Layar Melayang (Split Screen/Notifikasi) atau Aplikasi Lain");
     });
-
-    window.addEventListener("contextmenu", function(e) { e.preventDefault(); }, false);
   </script>
 </body>
 </html>
