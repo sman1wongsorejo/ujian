@@ -730,6 +730,19 @@
 
     function konfirmasiSelesai() {
       if (isSubmitting) return; 
+      
+      // === FITUR BARU: CEK SISA WAKTU MINIMAL ===
+      let sv = JSON.parse(localStorage.getItem(sessionKey));
+      if (sv && sv.endTime) {
+        let sisaMenit = Math.floor((sv.endTime - Date.now()) / 60000);
+        // Jika sisa waktu masih 10 menit atau lebih
+        if (sisaMenit >= 10) {
+          alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu di bawah 10 menit. Silakan teliti kembali jawaban Anda).`);
+          return; // Hentikan proses, jangan munculkan konfirmasi
+        }
+      }
+      // ==========================================
+
       let trjwb = Object.values(jawabanSiswa).filter(v => v !== "" && v !== ",,,,").length;
       let blm = dataSoal.length - trjwb;
       if(confirm(blm > 0 ? `Masih ada ${blm} soal yang belum dijawab. Yakin ingin mengakhiri ujian sekarang?` : "Apakah Anda yakin ingin menyelesaikan ujian ini?")) { 
