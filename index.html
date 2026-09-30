@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
   <title>Portal CBT - SMAN 1 Wongsorejo</title>
   
-  <!-- Font Modern Edukasi: Dimuat secara Asinkron agar halaman tidak render-blocking -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -135,7 +134,6 @@
     button.btn-outline { background: #ffffff; color: var(--text-main); border: 1.5px solid var(--card-border); box-shadow: var(--shadow-sm); }
     button.btn-outline:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
 
-    /* Tombol Darurat */
     .btn-emergency {
       background: linear-gradient(135deg, var(--warning) 0%, #d97706) !important;
       box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
@@ -221,7 +219,6 @@
     .loading-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
     .spinner { width: 40px; height: 40px; border: 4px solid var(--card-border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spinEdu 0.8s linear infinite; }
     
-    /* Indikator Status Jaringan */
     .network-status {
       position: fixed; bottom: 15px; left: 15px; z-index: 1000;
       padding: 6px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
@@ -247,7 +244,6 @@
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" onselectstart="return false;">
 
-  <!-- Indikator Koneksi Real-time -->
   <div id="netStatus" class="network-status net-online">
     <span id="netDot" style="width:7px; height:7px; background:#10b981; border-radius:50%; display:inline-block;"></span>
     <span id="netText">Terhubung</span>
@@ -354,9 +350,6 @@
   </div>
 
   <script>
-    // ==========================================
-    // KONFIGURASI API BACKEND (PASTE URL GAS DI SINI)
-    // ==========================================
     const URL_API_GAS = "https://script.google.com/macros/s/AKfycbyGi8A3MIDN-aOLnPfBbupq-Xv74shn4W5_i5NnWPlr6ww5rJbUFefngSuXe7tHxROy/exec";
 
     document.addEventListener('keydown', function(e) {
@@ -379,7 +372,6 @@
       } 
     }
 
-    // Status Jaringan Real-time
     window.addEventListener('online', updateNetworkStatus);
     window.addEventListener('offline', updateNetworkStatus);
 
@@ -483,13 +475,19 @@
               status = "lanjut"; teksTombolAktif = "LANJUTKAN UJIAN"; 
           }
           else { 
-              document.getElementById('dash-status').innerHTML = "<span style='color:var(--danger); font-weight:600;'>Waktu Habis ❌</span>"; status = "habis"; btn.innerText = "Sesi Berakhir"; btn.disabled = true; 
+              // PERBAIKAN: Jika waktu habis tapi siswa belum sempat kirim data, berikan tombol penyelamat kirim manual
+              document.getElementById('dash-status').innerHTML = "<span style='color:var(--danger); font-weight:600;'>Waktu Habis (Belum Terkirim) ⚠️</span>"; 
+              status = "habis_belum_kirim"; 
+              btn.innerText = "KIRIM JAWABAN TERSIMPAN SEKARANG"; 
+              btn.disabled = false;
+              btn.className = "btn-success";
+              btn.setAttribute("onclick", "kirimDataPaksaDariDashboard()");
           }
         } else { 
             document.getElementById('dash-status').innerHTML = "<span style='color:var(--success); font-weight:600;'>Siap ✅</span>"; 
         }
         
-        if (status !== "habis") {
+        if (status !== "habis_belum_kirim" && status !== "habis") {
             btn.disabled = true;
             let waktuTunggu = 5; 
             btn.innerText = `Harap baca aturan (${waktuTunggu}s)`;
@@ -512,6 +510,21 @@
           tampilkanLoading(false);
           alert("Gagal menghubungi server database.");
       });
+    }
+
+    // Fungsi khusus untuk mengirim jawaban jika siswa terjebak di status waktu habis sebelum sempat submit
+    function kirimDataPaksaDariDashboard() {
+      let saved = localStorage.getItem(sessionKey);
+      if (saved) {
+        let d = JSON.parse(saved);
+        jawabanSiswa = d.jawaban || {};
+        if (d.soal && d.soal.length > 0) {
+          dataSoal = d.soal;
+        }
+      }
+      if (confirm("Sistem mendeteksi ada jawaban tersimpan di HP Anda yang belum terkirim karena waktu habis.\n\nKlik OK untuk mengirimkan jawaban ini sekarang ke server.")) {
+        kirimData(false);
+      }
     }
 
     function mulaiKerjakan() {
@@ -696,8 +709,6 @@
       let sv = JSON.parse(localStorage.getItem(sessionKey));
       if (sv && sv.endTime) {
         let sisaMenit = Math.floor((sv.endTime - Date.now()) / 60000);
-        
-        // Batas waktu minimal pengumpulan diatur 25% dari total durasi ujian
         let batasMinimalMenit = Math.ceil(durasi * 0.25);
         
         if (sisaMenit >= batasMinimalMenit) {
@@ -713,7 +724,6 @@
       }
     }
 
-    // Fungsi kirim data dengan sistem Auto-Retry (Hingga 3x percobaan) dan Tombol Darurat
     function kirimData(paksa = false, retryCount = 0) {
       if (isSubmitting && retryCount === 0) return; 
       
