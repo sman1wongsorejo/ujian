@@ -135,6 +135,13 @@
     button.btn-outline { background: #ffffff; color: var(--text-main); border: 1.5px solid var(--card-border); box-shadow: var(--shadow-sm); }
     button.btn-outline:hover:not(:disabled) { background: #f8fafc; border-color: #cbd5e1; }
 
+    /* Tombol Darurat */
+    .btn-emergency {
+      background: linear-gradient(135deg, var(--warning) 0%, #d97706) !important;
+      box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3) !important;
+      margin-top: 12px; display: none;
+    }
+
     #dashboard-section, #exam-section, #result-section { display: none; }
     
     .dash-box { background: #f8fafc; padding: 20px; border-radius: 14px; margin-bottom: 20px; border: 1px solid var(--card-border); }
@@ -214,6 +221,15 @@
     .loading-overlay { position: fixed; inset: 0; background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(4px); display: none; justify-content: center; align-items: center; flex-direction: column; z-index: 2000; }
     .spinner { width: 40px; height: 40px; border: 4px solid var(--card-border); border-top: 4px solid var(--primary); border-radius: 50%; animation: spinEdu 0.8s linear infinite; }
     
+    /* Indikator Status Jaringan */
+    .network-status {
+      position: fixed; bottom: 15px; left: 15px; z-index: 1000;
+      padding: 6px 12px; border-radius: 20px; font-size: 11.5px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px; box-shadow: var(--shadow-sm);
+    }
+    .net-online { background: #d1fae5; color: #065f46; border: 1px solid #a7f3d0; }
+    .net-offline { background: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+
     .watermark-container { display: flex; justify-content: center; align-items: center; gap: 5px; margin-top: 25px; pointer-events: none; }
     .watermark-text { font-size: 12px; color: #94a3b8; font-weight: 500;}
     .watermark-glow { color: var(--primary); font-weight: 600; }
@@ -230,6 +246,12 @@
   </style>
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;" onselectstart="return false;">
+
+  <!-- Indikator Koneksi Real-time -->
+  <div id="netStatus" class="network-status net-online">
+    <span id="netDot" style="width:7px; height:7px; background:#10b981; border-radius:50%; display:inline-block;"></span>
+    <span id="netText">Terhubung</span>
+  </div>
 
   <div class="loading-overlay" id="loading">
     <div class="spinner"></div>
@@ -309,7 +331,9 @@
           <button class="btn-outline" onclick="soalSebelumnya()" id="btnPrev">SEBELUMNYA</button>
           <button onclick="soalSelanjutnya()" id="btnNext">SELANJUTNYA</button>
         </div>
-        <div style="margin-top:25px;" id="submit-container"><button class="btn-success" onclick="konfirmasiSelesai()" style="display:none;" id="btnSubmit">SELESAIKAN UJIAN</button></div>
+        <div style="margin-top:25px;" id="submit-container">
+          <button class="btn-success" onclick="konfirmasiSelesai()" style="display:none;" id="btnSubmit">SELESAIKAN UJIAN</button>
+        </div>
         <div class="nav-grid-container"><h4>Daftar Soal:</h4><div class="nav-grid" id="navGridArea"></div></div>
       </div>
 
@@ -355,7 +379,25 @@
       } 
     }
 
-    // Menggunakan fetch ringan dengan timeout/cache check sederhana
+    // Status Jaringan Real-time
+    window.addEventListener('online', updateNetworkStatus);
+    window.addEventListener('offline', updateNetworkStatus);
+
+    function updateNetworkStatus() {
+      const statusEl = document.getElementById('netStatus');
+      const dotEl = document.getElementById('netDot');
+      const textEl = document.getElementById('netText');
+      if (navigator.onLine) {
+        statusEl.className = "network-status net-online";
+        dotEl.style.background = "#10b981";
+        textEl.innerText = "Terhubung";
+      } else {
+        statusEl.className = "network-status net-offline";
+        dotEl.style.background = "#ef4444";
+        textEl.innerText = "Offline!";
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
       tampilkanLoading(true, "MEMBUAT KONEKSI KE SERVER...");
       
@@ -449,7 +491,7 @@
         
         if (status !== "habis") {
             btn.disabled = true;
-            let waktuTunggu = 5; // Dipercepat menjadi 5 detik agar lebih ramah pengguna
+            let waktuTunggu = 5; 
             btn.innerText = `Harap baca aturan (${waktuTunggu}s)`;
             let hitungMundur = setInterval(function() {
               waktuTunggu--;
@@ -654,8 +696,12 @@
       let sv = JSON.parse(localStorage.getItem(sessionKey));
       if (sv && sv.endTime) {
         let sisaMenit = Math.floor((sv.endTime - Date.now()) / 60000);
-        if (sisaMenit >= 10) {
-          alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu di bawah 10 menit. Silakan teliti kembali jawaban Anda).`);
+        
+        // Batas waktu minimal pengumpulan diatur 25% dari total durasi ujian
+        let batasMinimalMenit = Math.ceil(durasi * 0.25);
+        
+        if (sisaMenit >= batasMinimalMenit) {
+          alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu berada di bawah ${batasMinimalMenit} menit atau 25% dari total durasi. Silakan teliti kembali jawaban Anda).`);
           return; 
         }
       }
@@ -667,16 +713,26 @@
       }
     }
 
-    function kirimData(paksa = false) {
-      if (isSubmitting) return; 
+    // Fungsi kirim data dengan sistem Auto-Retry (Hingga 3x percobaan) dan Tombol Darurat
+    function kirimData(paksa = false, retryCount = 0) {
+      if (isSubmitting && retryCount === 0) return; 
+      
       isSubmitting = true; 
       clearInterval(interval); 
       
+      const maxRetries = 3;
       const btnSubmit = document.getElementById('btnSubmit');
-      if(btnSubmit) { btnSubmit.disabled = true; btnSubmit.innerText = "MENGIRIM..."; }
-
-      tampilkanLoading(true, "MENYIMPAN JAWABAN...");
       
+      if(btnSubmit) { 
+        btnSubmit.disabled = true; 
+        btnSubmit.innerText = retryCount > 0 ? `MENGIRIM ULANG (${retryCount}/${maxRetries})...` : "MENGIRIM JAWABAN..."; 
+      }
+
+      tampilkanLoading(true, retryCount > 0 ? `Koneksi terganggu, mencoba mengirim ulang (${retryCount})...` : "MENYIMPAN JAWABAN KE SERVER...");
+      
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+
       fetch(URL_API_GAS, {
         method: "POST",
         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -685,14 +741,19 @@
             dataSiswa: identitas, 
             kodeUjian: kodeUjian, 
             jawabanSiswa: jawabanSiswa 
-        })
+        }),
+        signal: controller.signal
       })
       .then(res => res.json())
       .then(res => {
-          tampilkanLoading(false); localStorage.removeItem(sessionKey);
+          clearTimeout(timeoutId);
+          tampilkanLoading(false); 
+          localStorage.removeItem(sessionKey);
+          
           document.getElementById('exam-section').style.display = 'none'; 
           document.getElementById('dashboard-section').style.display = 'none'; 
           document.getElementById('result-section').style.display = 'block';
+          
           if(paksa) { 
               document.getElementById('judul-selesai').innerText = "UJIAN DIBLOKIR"; 
               document.getElementById('judul-selesai').style.color = "var(--danger)"; 
@@ -700,10 +761,55 @@
           }
       })
       .catch(err => {
+          clearTimeout(timeoutId);
           tampilkanLoading(false); 
-          isSubmitting = false; 
-          if(btnSubmit) { btnSubmit.disabled = false; btnSubmit.innerText = "SELESAIKAN UJIAN"; }
-          alert("Gagal mengirim jawaban. Pastikan koneksi internet stabil, lalu klik tombol Selesai lagi.");
+          
+          if (retryCount < maxRetries) {
+            console.warn(`Gagal kirim percobaan ke-${retryCount + 1}, mencoba lagi...`);
+            setTimeout(() => {
+              isSubmitting = false;
+              kirimData(paksa, retryCount + 1);
+            }, 2000);
+          } else {
+            isSubmitting = false; 
+            if(btnSubmit) { 
+              btnSubmit.disabled = false; 
+              btnSubmit.innerText = "COBA KIRIM LAGI"; 
+            }
+            tampilkanTombolDarurat();
+          }
+      });
+    }
+
+    function tampilkanTombolDarurat() {
+      let submitContainer = document.getElementById('submit-container');
+      let btnDarurat = document.getElementById('btnEmergency');
+      if (!btnDarurat) {
+        btnDarurat = document.createElement('button');
+        btnDarurat.id = 'btnEmergency';
+        btnDarurat.className = 'btn-emergency';
+        btnDarurat.innerText = '🚨 SALIN TOKEN DARURAT & LAPOR PENGAWAS';
+        btnDarurat.onclick = salinTokenDarurat;
+        submitContainer.appendChild(btnDarurat);
+      }
+      btnDarurat.style.display = 'block';
+      alert("⚠️ Peringatan: Gagal terhubung ke server pusat.\nJawaban Anda aman tersimpan di HP. Silakan klik tombol 'SALIN TOKEN DARURAT' di bawah dan tunjukkan kepada pengawas ruang.");
+    }
+
+    function salinTokenDarurat() {
+      const dataDarurat = {
+        nisn: identitas.nisn,
+        nama: identitas.nama,
+        kelas: identitas.kelas,
+        kodeUjian: kodeUjian,
+        jawaban: jawabanSiswa
+      };
+      const stringData = JSON.stringify(dataDarurat);
+      
+      navigator.clipboard.writeText(stringData).then(() => {
+        alert("✅ Token jawaban darurat berhasil disalin!\nSilakan berikan teks token ini via WhatsApp kepada pengawas/guru pengampu.");
+      }).catch(err => {
+        prompt("Salin teks token darurat berikut:", stringData);
       });
     }
 
