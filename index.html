@@ -342,7 +342,7 @@
       </div>
 
       <div class="watermark-container">
-        <span class="watermark-text">© 2026 Very_Andika.</span>
+        <span class="watermark-text">&copy; 2026 Very_Andika.</span>
         <span class="watermark-text watermark-glow">All Rights Reserved</span>
       </div>
 
@@ -475,7 +475,6 @@
               status = "lanjut"; teksTombolAktif = "LANJUTKAN UJIAN"; 
           }
           else { 
-              // PERBAIKAN: Jika waktu habis tapi siswa belum sempat kirim data, berikan tombol penyelamat kirim manual
               document.getElementById('dash-status').innerHTML = "<span style='color:var(--danger); font-weight:600;'>Waktu Habis (Belum Terkirim) ⚠️</span>"; 
               status = "habis_belum_kirim"; 
               btn.innerText = "KIRIM JAWABAN TERSIMPAN SEKARANG"; 
@@ -512,7 +511,6 @@
       });
     }
 
-    // Fungsi khusus untuk mengirim jawaban jika siswa terjebak di status waktu habis sebelum sempat submit
     function kirimDataPaksaDariDashboard() {
       let saved = localStorage.getItem(sessionKey);
       if (saved) {
@@ -709,10 +707,10 @@
       let sv = JSON.parse(localStorage.getItem(sessionKey));
       if (sv && sv.endTime) {
         let sisaMenit = Math.floor((sv.endTime - Date.now()) / 60000);
-        let batasMinimalMenit = Math.ceil(durasi * 0.25);
+        let batasMinimalMenit = Math.ceil(durasi * 0.50); // Diubah menjadi 50% dari total waktu
         
         if (sisaMenit >= batasMinimalMenit) {
-          alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu berada di bawah ${batasMinimalMenit} menit atau 25% dari total durasi. Silakan teliti kembali jawaban Anda).`);
+          alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu berada di bawah ${batasMinimalMenit} menit atau 50% dari total durasi. Silakan teliti kembali jawaban Anda).`);
           return; 
         }
       }
@@ -838,6 +836,19 @@
            sv.pelanggaran = (sv.pelanggaran || 0) + 1; 
            localStorage.setItem(sessionKey, JSON.stringify(sv));
            
+           fetch(URL_API_GAS, {
+             method: "POST",
+             headers: { "Content-Type": "text/plain;charset=utf-8" },
+             body: JSON.stringify({
+               action: "catatPelanggaran",
+               nisn: identitas.nisn,
+               nama: identitas.nama,
+               kelas: identitas.kelas,
+               kodeUjian: kodeUjian,
+               kesempatanKe: sv.pelanggaran
+             })
+           }).catch(err => console.error("Gagal catat pelanggaran:", err));
+
            if (sv.pelanggaran >= 4) { 
                alert("🚨 PELANGGARAN FATAL (4/4) 🚨\nSistem mendeteksi aktivitas mencurigakan secara berulang. Ujian diblokir!"); 
                kirimData(true); 
