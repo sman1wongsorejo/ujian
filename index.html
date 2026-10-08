@@ -419,6 +419,7 @@
     let kodeUjian = ""; 
     let durasi = 90; 
     let interval; 
+    let pingInterval;
     let sessionKey = "";
     let isSubmitting = false; 
     let isPenalizing = false;
@@ -538,6 +539,28 @@
       document.getElementById('exam-section').style.display = 'block'; 
       document.getElementById('namaPeserta').innerText = identitas.nama;
       buatNav(); tampilkanSoal(0); mulaiTimer(endT);
+
+      // Mulai kirim sinyal online / live progress setiap 10 detik
+      if (pingInterval) clearInterval(pingInterval);
+      pingInterval = setInterval(kirimPing, 10000);
+      kirimPing();
+    }
+
+    function kirimPing() {
+      if (document.getElementById('exam-section').style.display === 'block' && !isSubmitting) {
+        let terjawab = Object.values(jawabanSiswa).filter(v => v !== "" && v !== ",,,,").length;
+        fetch(URL_API_GAS, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({
+            action: "pingProgress",
+            nisn: identitas.nisn,
+            nama: identitas.nama,
+            kodeUjian: kodeUjian,
+            terjawab: terjawab
+          })
+        }).catch(err => console.error("Gagal kirim ping:", err));
+      }
     }
 
     function buatNav() {
@@ -688,7 +711,8 @@
       interval = setInterval(function () {
         let sisa = Math.floor((endT - Date.now()) / 1000);
         if (sisa <= 0) { 
-            clearInterval(interval); 
+            clearInterval(interval);
+            if (pingInterval) clearInterval(pingInterval);
             dt.textContent = "00:00"; 
             if (!isSubmitting) {
                 alert("Waktu Habis! Jawaban sedang dikumpulkan otomatis."); 
@@ -707,7 +731,7 @@
       let sv = JSON.parse(localStorage.getItem(sessionKey));
       if (sv && sv.endTime) {
         let sisaMenit = Math.floor((sv.endTime - Date.now()) / 60000);
-        let batasMinimalMenit = Math.ceil(durasi * 0.50); // Diubah menjadi 50% dari total waktu
+        let batasMinimalMenit = Math.ceil(durasi * 0.50); // 50% dari total waktu
         
         if (sisaMenit >= batasMinimalMenit) {
           alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu berada di bawah ${batasMinimalMenit} menit atau 50% dari total durasi. Silakan teliti kembali jawaban Anda).`);
@@ -727,6 +751,7 @@
       
       isSubmitting = true; 
       clearInterval(interval); 
+      if (pingInterval) clearInterval(pingInterval);
       
       const maxRetries = 3;
       const btnSubmit = document.getElementById('btnSubmit');
