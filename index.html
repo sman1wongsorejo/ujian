@@ -506,6 +506,7 @@
     let sessionKey = "";
     let isSubmitting = false; 
     let isPenalizing = false;
+    let isCoolingDown = false; // Jeda pencegah false-alarm pelanggaran saat menutup alert
 
     function prosesLogin() {
       const nisn = document.getElementById('nisn').value.trim(); 
@@ -826,7 +827,9 @@
         let batasMinimalMenit = Math.ceil(durasi * 0.50);
         
         if (sisaMenit >= batasMinimalMenit) {
+          isCoolingDown = true; // Aktifkan cooldown pencegah false-alarm
           alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu berada di bawah ${batasMinimalMenit} menit atau 50% dari total durasi. Silakan teliti kembali jawaban Anda).`);
+          setTimeout(() => { isCoolingDown = false; }, 1500);
           return; 
         }
       }
@@ -964,36 +967,12 @@
       document.getElementById('loading').style.display = s ? 'flex' : 'none';  
     }
 
-    // Fungsi Bunyi Beep Audio Web API
-    function playBeep() {
-      try {
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const oscillator = audioCtx.createOscillator();
-        const gainNode = audioCtx.createGain();
-        
-        oscillator.type = 'sine';
-        oscillator.frequency.setValueAtTime(880, audioCtx.currentTime);
-        
-        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
-        gainNode.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.5);
-        
-        oscillator.connect(gainNode);
-        gainNode.connect(audioCtx.destination);
-        
-        oscillator.start();
-        oscillator.stop(audioCtx.currentTime + 0.5);
-      } catch (e) {
-        console.warn("Audio tidak didukung browser:", e);
-      }
-    }
-
     function catatPelanggaran(alasan) {
-      if (isSubmitting || isPenalizing) return; 
+      if (isSubmitting || isPenalizing || isCoolingDown) return; // Abaikan jika sedang cooldown dialog alert
 
       const examSec = document.getElementById('exam-section');
       if (examSec && examSec.style.display !== 'none') {
         isPenalizing = true; 
-        playBeep(); // Membunyikan suara beep peringatan
         
         let sv = JSON.parse(localStorage.getItem(sessionKey)); 
         if(sv) {
