@@ -506,7 +506,7 @@
     let sessionKey = "";
     let isSubmitting = false; 
     let isPenalizing = false;
-    let isCoolingDown = false; // Jeda pencegah false-alarm pelanggaran saat menutup alert
+    let isCoolingDown = false; 
 
     function prosesLogin() {
       const nisn = document.getElementById('nisn').value.trim(); 
@@ -536,7 +536,11 @@
             return; 
         }
         
-        identitas = res.siswa; dataSoal = res.soal; durasi = res.durasi; sessionKey = `CBT_SMANJO_${identitas.nisn}_${kodeUjian}`;
+        identitas = res.siswa; 
+        dataSoal = res.soal; 
+        durasi = res.durasi; 
+        sessionKey = `CBT_SMANJO_${identitas.nisn}_${kodeUjian}`;
+        jawabanSiswa = res.jawabanTersimpan || {}; // Default jawaban diambil dari backup auto-save server
         
         document.getElementById('dash-nama').innerText = identitas.nama; 
         document.getElementById('dash-nisn').innerText = identitas.nisn; 
@@ -554,10 +558,15 @@
               localStorage.removeItem(sessionKey);
               document.getElementById('dash-status').innerHTML = "<span style='color:var(--success); font-weight:700;'>Siap (Sesi Direset) ✅</span>";
               status = "baru";
+              // Data otomatis menggunakan jawabanSiswa dari server
           }
           else if(d.endTime > Date.now()) { 
               document.getElementById('dash-status').innerHTML = `<span style='color:var(--warning); font-weight:700;'>Melanjutkan Sesi (${pel}/4) ⏳</span>`; 
               status = "lanjut"; teksTombolAktif = "LANJUTKAN UJIAN"; 
+              // Jika data lokal ada isinya, dahulukan lokal. Jika kosong, gunakan backup server.
+              if (Object.keys(d.jawaban || {}).length > 0) {
+                  jawabanSiswa = d.jawaban;
+              }
           }
           else { 
               document.getElementById('dash-status').innerHTML = "<span style='color:var(--danger); font-weight:700;'>Waktu Habis (Belum Terkirim) ⚠️</span>"; 
@@ -568,7 +577,12 @@
               btn.setAttribute("onclick", "kirimDataPaksaDariDashboard()");
           }
         } else { 
-            document.getElementById('dash-status').innerHTML = "<span style='color:var(--success); font-weight:700;'>Siap ✅</span>"; 
+            // Jika login di HP/Browser baru (atau baru di-clear cache) namun server ada data backup Auto-Save
+            if(Object.keys(jawabanSiswa).length > 0) {
+                document.getElementById('dash-status').innerHTML = "<span style='color:var(--accent); font-weight:700;'>Siap (Data Terpulihkan) 🔄</span>"; 
+            } else {
+                document.getElementById('dash-status').innerHTML = "<span style='color:var(--success); font-weight:700;'>Siap ✅</span>"; 
+            }
         }
         
         if (status !== "habis_belum_kirim" && status !== "habis") {
@@ -613,11 +627,15 @@
     function mulaiKerjakan() {
       let saved = localStorage.getItem(sessionKey); let endT;
       if(saved) {
-        let d = JSON.parse(saved); jawabanSiswa = d.jawaban || {}; dataSoal = d.soal;
+        let d = JSON.parse(saved); 
+        // Mengamankan jawabanSiswa jika sebelumnya di-merge pada prosesLogin()
+        jawabanSiswa = (Object.keys(d.jawaban || {}).length > 0) ? d.jawaban : jawabanSiswa;
+        dataSoal = d.soal;
         if(d.pelanggaran >= 4) { kirimData(true); return; } endT = d.endTime;
       } else {
         endT = Date.now() + (durasi * 60000); 
-        localStorage.setItem(sessionKey, JSON.stringify({endTime: endT, jawaban: {}, soal: dataSoal, pelanggaran: 0}));
+        // Menyimpan data backup (dari Auto-Save server jika ada) langsung ke localStorage baru
+        localStorage.setItem(sessionKey, JSON.stringify({endTime: endT, jawaban: jawabanSiswa, soal: dataSoal, pelanggaran: 0}));
       }
       document.getElementById('dashboard-section').style.cssText = "display: none !important;"; 
       document.getElementById('exam-section').style.cssText = "display: block !important;"; 
@@ -625,7 +643,8 @@
       buatNav(); tampilkanSoal(0); mulaiTimer(endT);
 
       if (pingInterval) clearInterval(pingInterval);
-      pingInterval = setInterval(kirimPing, 10000);
+      // INTERVAL AUTO-SAVE DIUBAH MENJADI 60 DETIK AGAR SERVER AMAN
+      pingInterval = setInterval(kirimPing, 60000);
       kirimPing();
     }
 
@@ -641,7 +660,8 @@
             nisn: identitas.nisn,
             nama: identitas.nama,
             kodeUjian: kodeUjian,
-            terjawab: terjawab
+            terjawab: terjawab,
+            jawabanSiswaStr: JSON.stringify(jawabanSiswa) // Payload jawaban Auto-Save
           })
         }).catch(err => console.error("Gagal kirim ping:", err));
       }
@@ -827,7 +847,7 @@
         let batasMinimalMenit = Math.ceil(durasi * 0.50);
         
         if (sisaMenit >= batasMinimalMenit) {
-          isCoolingDown = true; // Aktifkan cooldown pencegah false-alarm
+          isCoolingDown = true; 
           alert(`Maaf, Anda belum dapat mengumpulkan ujian. Sisa waktu masih ${sisaMenit} menit.\n\n(Ujian baru bisa diakhiri jika sisa waktu berada di bawah ${batasMinimalMenit} menit atau 50% dari total durasi. Silakan teliti kembali jawaban Anda).`);
           setTimeout(() => { isCoolingDown = false; }, 1500);
           return; 
@@ -968,7 +988,7 @@
     }
 
     function catatPelanggaran(alasan) {
-      if (isSubmitting || isPenalizing || isCoolingDown) return; // Abaikan jika sedang cooldown dialog alert
+      if (isSubmitting || isPenalizing || isCoolingDown) return; 
 
       const examSec = document.getElementById('exam-section');
       if (examSec && examSec.style.display !== 'none') {
