@@ -540,7 +540,7 @@
         dataSoal = res.soal; 
         durasi = res.durasi; 
         sessionKey = `CBT_SMANJO_${identitas.nisn}_${kodeUjian}`;
-        jawabanSiswa = res.jawabanTersimpan || {}; // Default jawaban diambil dari backup auto-save server
+        jawabanSiswa = res.jawabanTersimpan || {}; 
         
         document.getElementById('dash-nama').innerText = identitas.nama; 
         document.getElementById('dash-nisn').innerText = identitas.nisn; 
@@ -558,12 +558,10 @@
               localStorage.removeItem(sessionKey);
               document.getElementById('dash-status').innerHTML = "<span style='color:var(--success); font-weight:700;'>Siap (Sesi Direset) ✅</span>";
               status = "baru";
-              // Data otomatis menggunakan jawabanSiswa dari server
           }
           else if(d.endTime > Date.now()) { 
               document.getElementById('dash-status').innerHTML = `<span style='color:var(--warning); font-weight:700;'>Melanjutkan Sesi (${pel}/4) ⏳</span>`; 
               status = "lanjut"; teksTombolAktif = "LANJUTKAN UJIAN"; 
-              // Jika data lokal ada isinya, dahulukan lokal. Jika kosong, gunakan backup server.
               if (Object.keys(d.jawaban || {}).length > 0) {
                   jawabanSiswa = d.jawaban;
               }
@@ -577,7 +575,6 @@
               btn.setAttribute("onclick", "kirimDataPaksaDariDashboard()");
           }
         } else { 
-            // Jika login di HP/Browser baru (atau baru di-clear cache) namun server ada data backup Auto-Save
             if(Object.keys(jawabanSiswa).length > 0) {
                 document.getElementById('dash-status').innerHTML = "<span style='color:var(--accent); font-weight:700;'>Siap (Data Terpulihkan) 🔄</span>"; 
             } else {
@@ -628,13 +625,11 @@
       let saved = localStorage.getItem(sessionKey); let endT;
       if(saved) {
         let d = JSON.parse(saved); 
-        // Mengamankan jawabanSiswa jika sebelumnya di-merge pada prosesLogin()
         jawabanSiswa = (Object.keys(d.jawaban || {}).length > 0) ? d.jawaban : jawabanSiswa;
         dataSoal = d.soal;
         if(d.pelanggaran >= 4) { kirimData(true); return; } endT = d.endTime;
       } else {
         endT = Date.now() + (durasi * 60000); 
-        // Menyimpan data backup (dari Auto-Save server jika ada) langsung ke localStorage baru
         localStorage.setItem(sessionKey, JSON.stringify({endTime: endT, jawaban: jawabanSiswa, soal: dataSoal, pelanggaran: 0}));
       }
       document.getElementById('dashboard-section').style.cssText = "display: none !important;"; 
@@ -643,7 +638,6 @@
       buatNav(); tampilkanSoal(0); mulaiTimer(endT);
 
       if (pingInterval) clearInterval(pingInterval);
-      // INTERVAL AUTO-SAVE DIUBAH MENJADI 60 DETIK AGAR SERVER AMAN
       pingInterval = setInterval(kirimPing, 60000);
       kirimPing();
     }
@@ -661,7 +655,7 @@
             nama: identitas.nama,
             kodeUjian: kodeUjian,
             terjawab: terjawab,
-            jawabanSiswaStr: JSON.stringify(jawabanSiswa) // Payload jawaban Auto-Save
+            jawabanSiswaStr: JSON.stringify(jawabanSiswa) 
           })
         }).catch(err => console.error("Gagal kirim ping:", err));
       }
@@ -902,7 +896,8 @@
             action: "kumpulkanUjian",  
             dataSiswa: identitas,  
             kodeUjian: kodeUjian,  
-            jawabanSiswa: jawabanSiswa  
+            jawabanSiswa: jawabanSiswa,
+            isBlokir: paksa
         }),
         signal: controller.signal
       })
@@ -991,7 +986,8 @@
       if (isSubmitting || isPenalizing || isCoolingDown) return; 
 
       const examSec = document.getElementById('exam-section');
-      if (examSec && examSec.style.display !== 'none') {
+      
+      if (examSec && examSec.style.display.includes('block')) {
         isPenalizing = true; 
         
         let sv = JSON.parse(localStorage.getItem(sessionKey)); 
@@ -1012,13 +1008,18 @@
              })
            }).catch(err => console.error("Gagal catat pelanggaran:", err));
 
-           if (sv.pelanggaran >= 4) { 
-               alert("🚨 PELANGGARAN FATAL (4/4) 🚨\nSistem mendeteksi aktivitas mencurigakan secara berulang. Ujian diblokir!"); 
-               kirimData(true); 
-           } else { 
-               alert(`🚨 PERINGATAN KECURANGAN ${sv.pelanggaran} / 4 🚨\nTerdeteksi: ${alasan}.\nDilarang membuka aplikasi lain atau mengecilkan browser!\n\nHarap kembali fokus ke ujian.`); 
-               location.reload(); 
-           }
+           setTimeout(() => {
+             if (sv.pelanggaran >= 4) { 
+                 alert("🚨 PELANGGARAN FATAL (4/4) 🚨\nSistem mendeteksi aktivitas mencurigakan secara berulang. Ujian diblokir!"); 
+                 kirimData(true); 
+             } else { 
+                 alert(`🚨 PERINGATAN KECURANGAN ${sv.pelanggaran} / 4 🚨\nTerdeteksi: ${alasan}.\nDilarang membuka aplikasi lain atau mengecilkan browser!\n\nHarap kembali fokus ke ujian.`); 
+                 location.reload(); 
+             }
+           }, 500); 
+           
+        } else {
+           isPenalizing = false; 
         }
       }
     }
